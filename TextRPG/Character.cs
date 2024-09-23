@@ -45,15 +45,10 @@ namespace TextRPG
 				else { _hp = value; }
 			} 
 		}
-
 		public int DefaultAttack { get; protected set; }
-
 		public int Attack { get; protected set; }
-
 		public int DefaultDefense { get; protected set; }
-
 		public int Defense { get; protected set; }
-
 		public virtual void TakeDamage(ICharacter enemy)
 		{
 			HP -= enemy.Attack;
@@ -64,8 +59,8 @@ namespace TextRPG
 			sb.AppendLine($"Lv {Level}");
 			sb.AppendLine($"Class : {Class}");
 			sb.AppendLine($"Name : {Name}");
-			sb.AppendLine($"Attack : {Attack}");
-			sb.AppendLine($"Defense : {Defense}");
+			sb.AppendLine($"Attack : {Attack} (+{Attack-DefaultAttack})");
+			sb.AppendLine($"Defense : {Defense} (+{Defense -DefaultDefense})");
 			sb.AppendLine($"HP : {HP}");
 			return sb.ToString();
 		}
@@ -73,6 +68,8 @@ namespace TextRPG
 		{
 			Name = name; 
 		}
+		public void AddAttack(int attack) { this.Attack += attack; }
+		public void AddDefense(int defense) { this.Defense += defense; }
 	}
 	public class Warrior : Playable
 	{
