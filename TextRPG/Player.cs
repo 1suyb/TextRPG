@@ -11,6 +11,8 @@ namespace TextRPG
 	{
 		private Playable _character;
 		private Inventory _inventory;
+		private Weapon? _weapon;
+		private Armor? _armor;
 		public Inventory Inventory { get { return _inventory; } }
 
 		public Player()
@@ -39,21 +41,52 @@ namespace TextRPG
 		{
 			return _inventory.Items.Count;
 		}
-		public void WearEquipment(int index)
+		public void Equip(int index)
 		{
-			if (_inventory.Items[index-1].GetType() == typeof(Equipment)) 
+			index = index - 1;
+			if (_inventory.Items[index].GetType() == typeof(Weapon)) 
 			{
-				Weapon weapon = (Weapon) _inventory.Items[index-1];
-				this._character.AddAttack(weapon.Wear());
-				Console.WriteLine($"{weapon.Name} 장착 성공");
+				Console.WriteLine(_inventory.Items[index].Info());
+				Weapon weapon = (Weapon)_inventory.Items[index];
+				if (weapon.IsWorn) { this.TakeOffEquipment(weapon); }
+				else { this.WearEuipment(weapon); }
 			}
-			if (_inventory.Items[index - 1].GetType() == typeof(Armor))
+			if (_inventory.Items[index].GetType() == typeof(Armor))
 			{
-				Armor armor = (Armor)_inventory.Items[index - 1];
+				Armor armor = (Armor)_inventory.Items[index];
 				this._character.AddAttack(armor.Wear());
-				Console.WriteLine($"{armor.Name} 장착 성공");
+				if (armor.IsWorn) { this.TakeOffEquipment(armor); }
+				else { this.WearEuipment(armor); }
 			}
 		}
+		private void TakeOffEquipment(Weapon weapon)
+		{
+			weapon.TakeOff();
+			this._weapon = null;
+			_character.AddAttack(-weapon.Attack);
+		}
+		private void WearEuipment(Weapon weapon)
+		{
+			weapon.Wear();
+			if(_weapon != null) { TakeOffEquipment(_weapon); }
+			this._weapon = weapon;
+			_character.AddAttack(weapon.Attack);
+		}
+		private void TakeOffEquipment(Armor armor)
+		{
+			armor.TakeOff();
+			_armor = null;
+			_character.AddDefense(-armor.Defense);
+		}
+		private void WearEuipment(Armor armor)
+		{
+			armor.Wear();
+			if(_armor != null) 
+			{ TakeOffEquipment(_armor); }
+			_armor = armor;
+			_character.AddDefense(armor.Defense);
+		}
+
 		public void PurchaseItem(Item item)
 		{
 			if (_inventory.UseGold(item.Price))

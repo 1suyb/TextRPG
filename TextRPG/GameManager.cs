@@ -135,7 +135,7 @@ namespace TextRPG
 				}
 				if(input != 0)
 				{
-					_player.WearEquipment(input);
+					_player.Equip(input);
 				}
 			}
 			_state = GameState.Main;

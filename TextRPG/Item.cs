@@ -22,11 +22,21 @@ namespace TextRPG
 
 		public static bool operator ==(Item left, Item right)
 		{
+			if (ReferenceEquals(left, null) && ReferenceEquals(right, null))
+				return true;
+			if (ReferenceEquals(left, null) || ReferenceEquals(right, null))
+				return false;
 			if (left.Name == right.Name) { return true; }
 			else { return false; }
+
 		}
 		public static bool operator !=(Item left, Item right)
 		{
+			if (ReferenceEquals(left, null) && ReferenceEquals(right, null))
+				return false;
+			if (ReferenceEquals(left, null) || ReferenceEquals(right, null))
+				return true;
+
 			if (left.Name == right.Name) { return false; }
 			else { return true; }
 		}
