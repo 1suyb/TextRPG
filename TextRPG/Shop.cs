@@ -31,6 +31,18 @@ namespace TextRPG
             }
 			return sb.ToString();
         }
+		public string ShowShopItemList(Inventory inventory)
+		{
+			StringBuilder sb = new StringBuilder();
+			foreach (Item item in _items)
+			{
+				if (inventory.HasItem(item))
+					sb.AppendLine($"{item.Info()} | 구매완료");
+				else 
+					sb.AppendLine($"{item.Info()} | {item.Price}");
+			}
+			return sb.ToString();
+		}
 
 	}
 }

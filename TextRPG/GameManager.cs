@@ -117,7 +117,7 @@ namespace TextRPG
 		public void ShopScene()
 		{
 			Console.WriteLine("Debug - Shop 진입");
-			Console.WriteLine(_shop.ShowShopItemList());
+			Console.WriteLine(_shop.ShowShopItemList(_inventory));
 			_state = GameState.Main;
 		}
 

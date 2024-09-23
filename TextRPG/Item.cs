@@ -19,6 +19,18 @@ namespace TextRPG
 			string detail = $"{Name} | {Description} ";
 			return detail ;
 		}
+
+		public static bool operator ==(Item left, Item right)
+		{
+			if (left.Name == right.Name) { return true; }
+			else { return false; }
+		}
+		public static bool operator !=(Item left, Item right)
+		{
+			if (left.Name == right.Name) { return false; }
+			else { return true; }
+		}
+
 	}
 
 	public abstract class Equipment : Item
