@@ -64,5 +64,10 @@ namespace TextRPG
 		{
 			_items.Add(item);
 		}
+		public void AddGold(int gold) { _gold += gold; }
+		public void RemoveItem(int index)
+		{
+			_items.RemoveAt(index);
+		}
 	}
 }

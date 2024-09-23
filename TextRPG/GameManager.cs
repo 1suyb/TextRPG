@@ -146,6 +146,7 @@ namespace TextRPG
 			Console.WriteLine("Debug - Shop 진입");
 			Console.WriteLine(_shop.ShowShopItemList());
 			Console.WriteLine("1. 아이템 구매");
+			Console.WriteLine("2. 아이템 판매");
 			Console.WriteLine("0. 나가기");
 			int input = 0;
 			while (true)
@@ -167,6 +168,20 @@ namespace TextRPG
 				if (input != 0)
 				{
 					_player.PurchaseItem(_shop.Items[input-1]);
+				}
+			}
+			if(input == 2)
+			{
+				Console.WriteLine(_player.ShowItemList());
+				while (true)
+				{
+					input = Input();
+					if (IsVaildInput(0, _player.GetInventorySize() - 1, input)) { break; }
+					else { Console.WriteLine("잘못된 입력입니다."); }
+				}
+				if (input != 0) 
+				{
+					_player.SellItem(input);
 				}
 			}
 			_state = GameState.Main;
