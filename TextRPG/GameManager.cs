@@ -17,10 +17,11 @@ namespace TextRPG
 	internal class GameManager
 	{
 		private GameState _state;
-
+		private Warrior _warrior;
 		public GameManager()
 		{
 			_state = GameState.Start;
+			_warrior = new Warrior();
 		}
 
 		public void GameMain()
@@ -61,6 +62,8 @@ namespace TextRPG
 		public void StartScene()
 		{
 			Console.WriteLine("어서오세요 TextRPG입니다");
+			Console.WriteLine("이름을 설정해주세요");
+			_warrior.SetName(Console.ReadLine());
 			_state = GameState.Main;
 		}
 		public void MainScene()
@@ -96,6 +99,7 @@ namespace TextRPG
 		public void StatusScene()
 		{
 			Console.WriteLine("Debug - Staus 진입");
+			Console.WriteLine(_warrior.ShowDetailStatus());
 			_state = GameState.Main;
 		}
 		public void InventoryScene()
