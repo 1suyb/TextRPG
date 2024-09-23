@@ -7,16 +7,30 @@ using System.Threading.Tasks;
 
 namespace TextRPG
 {
-	public abstract class Item
+	public abstract class Item: IPurchasable
 	{
 		public abstract string Name { get; }
 		public abstract string Description { get; }
+
+		public abstract int Price { get; protected set; }
 
 		public virtual string Info()
 		{
 			string detail = $"{Name} | {Description} ";
 			return detail ;
 		}
+
+		public static bool operator ==(Item left, Item right)
+		{
+			if (left.Name == right.Name) { return true; }
+			else { return false; }
+		}
+		public static bool operator !=(Item left, Item right)
+		{
+			if (left.Name == right.Name) { return false; }
+			else { return true; }
+		}
+
 	}
 
 	public abstract class Equipment : Item
@@ -40,21 +54,23 @@ namespace TextRPG
 			return detail ;
 		}
 	}
-	public class Weapon : Equipment
+	public class Weapon : Equipment, IPurchasable
 	{
 		private string _name;
-		public override string Name { get { return _name; } }
 		private string _description;
-		public override string Description { get { return _description; } }
 		private int _attack;
+		public override string Name { get { return _name; } }
+		public override string Description { get { return _description; } }
 		public int Attack { get { return _attack; } }
+		public override int Price { get; protected set; }
 
-		public Weapon(string name, string description, int attack)
+		public Weapon(string name, string description, int attack, int price)
 		{
 			_name = name;
 			_description = description;
 			_attack = attack;
 			_isWorn = false;
+			Price = price;
 		}
 		public override string Info() 
 		{
@@ -63,31 +79,33 @@ namespace TextRPG
 		}
 
 	}
-	public class Armor : Equipment
+	public class Armor : Equipment, IPurchasable 
 	{
+		private string _name;
+		private string _description;
 		private int _defense;
 		public int Defense { get { return _defense; } }
-
-		private string _name;
 		public override string Name { get { return _name; } }
-		private string _description;
 		public override string Description { get { return _description; } }
+		public override int Price { get; protected set; }
 
-		public Armor(string name, string description, int defense)
+		public Armor(string name, string description, int defense, int price)
 		{
 			_name = name;
 			_description = description;
 			_defense = defense;
 			_isWorn = false;
+			Price = price;
 		}
-
 		public override string Info()
 		{
 			string[] details = base.Info().Split("|");
 			return $"{details[0]} | 방어력 : {Defense} | {details[1]}";
 		}
-
-
 	}
 
+	public interface IPurchasable
+	{
+		public int Price { get; }
+	}
 }
