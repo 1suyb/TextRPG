@@ -11,15 +11,7 @@ namespace TextRPG
 		private List<Item> _items;
 		public List<Item> Items {  get { return _items; } }
 		private int _gold;
-		public int Gold {
-			get { return _gold; }
-			set
-			{
-				if (value < 0) { return; }
-				else { _gold = value; }
-			}
-
-		}
+		public int Gold {get { return _gold; }}
 
 		public void TestInit()
 		{
@@ -28,7 +20,7 @@ namespace TextRPG
 
 			_items.Add(new Armor("천갑옷", "나무로 만든 갑옷입니다.", 1, 100));
 
-			Gold = 1500;
+			_gold = 1500;
 		}
 		public string ShowGold()
 		{
@@ -44,15 +36,6 @@ namespace TextRPG
 			}
 			return sb.ToString();
 		} 
-
-		public string PurchaseItem(IPurchasable item)
-		{
-			if ((Gold - item.Price) < 0) { return "골드가 부족합니다."; }
-			else { 
-				Gold -= item.Price;
-				return "구매 성공";
-			}
-		}
 		
 		public bool HasItem(Item item)
 		{
@@ -61,6 +44,25 @@ namespace TextRPG
 				if (i == item) return true;
 			}
 			return false;
+		}
+
+		public bool IsEnoughGold(int gold)
+		{
+			if (_gold - gold < 0) { return false; }
+			else { return true; }
+		}
+		public bool UseGold(int gold)
+		{
+            if (IsEnoughGold(gold))
+			{
+				_gold -= gold;
+				return true;
+			}
+			else { return false; }
+        }
+		public void AddItem(Item item)
+		{
+			_items.Add(item);
 		}
 	}
 }

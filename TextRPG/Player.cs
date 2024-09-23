@@ -11,6 +11,7 @@ namespace TextRPG
 	{
 		private Playable _character;
 		private Inventory _inventory;
+		public Inventory Inventory { get { return _inventory; } }
 
 		public Player()
 		{
@@ -52,6 +53,16 @@ namespace TextRPG
 				this._character.AddAttack(armor.Wear());
 				Console.WriteLine($"{armor.Name} 장착 성공");
 			}
+		}
+		public void PurchaseItem(Item item)
+		{
+			if (_inventory.UseGold(item.Price))
+			{
+				_inventory.AddItem(item);
+				_inventory.ShowItemList();
+			}
+			else { Console.WriteLine("골드가 부족합니다."); }
+			
 		}
 	}
 }

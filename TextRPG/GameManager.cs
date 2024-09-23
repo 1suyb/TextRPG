@@ -145,6 +145,30 @@ namespace TextRPG
 			Console.WriteLine();
 			Console.WriteLine("Debug - Shop 진입");
 			Console.WriteLine(_shop.ShowShopItemList());
+			Console.WriteLine("1. 아이템 구매");
+			Console.WriteLine("0. 나가기");
+			int input = 0;
+			while (true)
+			{
+				input = Input();
+				if (IsVaildInput(0, 2, input)) { break; }
+				else { Console.WriteLine("잘못된 입력입니다."); }
+			}
+			if (input == 1)
+			{
+				Console.WriteLine(_shop.ShowShopItemList(_player.Inventory));
+				Console.WriteLine("0. 나가기");
+				while (true)
+				{
+					input = Input();
+					if (IsVaildInput(0, _shop.GetShopItemSize() - 1, input)) { break; }
+					else { Console.WriteLine("잘못된 입력입니다."); }
+				}
+				if (input != 0)
+				{
+					_player.PurchaseItem(_shop.Items[input-1]);
+				}
+			}
 			_state = GameState.Main;
 		}
 
