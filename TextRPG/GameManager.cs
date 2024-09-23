@@ -19,12 +19,15 @@ namespace TextRPG
 		private GameState _state;
 		private Warrior _warrior;
 		private Inventory _inventory;
+		private Shop _shop;
 		public GameManager()
 		{
 			_state = GameState.Start;
 			_warrior = new Warrior();
 			_inventory = new Inventory();
+			_shop = new Shop();
 			_inventory.TestInit();
+			_shop.TestInit();
 		}
 
 		public void GameMain()
@@ -114,6 +117,7 @@ namespace TextRPG
 		public void ShopScene()
 		{
 			Console.WriteLine("Debug - Shop 진입");
+			Console.WriteLine(_shop.ShowShopItemList());
 			_state = GameState.Main;
 		}
 

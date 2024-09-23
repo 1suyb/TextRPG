@@ -6,21 +6,30 @@ using System.Threading.Tasks;
 
 namespace TextRPG
 {
-	internal class Inventory
+	public class Inventory
 	{
 		private List<Item> _items;
 		public List<Item> Items {  get { return _items; } }
-		public int Gold { get; private set; }
+		private int _gold;
+		public int Gold {
+			get { return _gold; }
+			set
+			{
+				if (value < 0) { return; }
+				else { _gold = value; }
+			}
+
+		}
 
 		public void TestInit()
 		{
 			_items = new List<Item>();
-			_items.Add(new Weapon("나무칼", "나무로 만든 칼입니다.", 1));
-			_items.Add(new Weapon("돌칼", "돌로 만든 칼입니다.", 3));
-			_items.Add(new Weapon("구리칼", "구리로 만든 칼입니다.", 5));
-			_items.Add(new Armor("천갑옷", "나무로 만든 갑옷입니다.", 1));
-			_items.Add(new Armor("나무갑옷", "돌로 만든 갑옷입니다.", 3));
-			_items.Add(new Armor("구리갑옷", "구리로 만든 갑옷입니다.", 5));
+			_items.Add(new Weapon("나무칼", "나무로 만든 칼입니다.", 1, 100));
+			_items.Add(new Weapon("돌칼", "돌로 만든 칼입니다.", 3, 300));
+			_items.Add(new Weapon("구리칼", "구리로 만든 칼입니다.", 5, 500));
+			_items.Add(new Armor("천갑옷", "나무로 만든 갑옷입니다.", 1, 100));
+			_items.Add(new Armor("나무갑옷", "돌로 만든 갑옷입니다.", 3,300));
+			_items.Add(new Armor("구리갑옷", "구리로 만든 갑옷입니다.", 5,500));
 			Gold = 1500;
 		}
 
@@ -32,6 +41,15 @@ namespace TextRPG
 				sb.AppendLine(item.Info());
 			}
 			return sb.ToString();
+		}
+
+		public string PurchaseItem(IPurchasable item)
+		{
+			if ((Gold - item.Price) < 0) { return "골드가 부족합니다."; }
+			else { 
+				Gold -= item.Price;
+				return "구매 성공";
+			}
 		}
 	}
 }
