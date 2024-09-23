@@ -11,6 +11,7 @@ namespace TextRPG
 	{
 		private Playable _character;
 		private Inventory _inventory;
+		public Inventory Inventory { get { return _inventory; } }
 
 		public Player()
 		{
@@ -32,7 +33,7 @@ namespace TextRPG
 		}
 		public string ShowItemList()
 		{
-			return _inventory.ShowItemList(true	);
+			return _inventory.ShowItemList(true);
 		}
 		public int GetInventorySize()
 		{
@@ -51,6 +52,24 @@ namespace TextRPG
 				Armor armor = (Armor)_inventory.Items[index - 1];
 				this._character.AddAttack(armor.Wear());
 				Console.WriteLine($"{armor.Name} 장착 성공");
+			}
+		}
+		public void PurchaseItem(Item item)
+		{
+			if (_inventory.UseGold(item.Price))
+			{
+				_inventory.AddItem(item);
+				_inventory.ShowItemList();
+			}
+			else { Console.WriteLine("골드가 부족합니다."); }
+			
+		}
+		public void SellItem(int index)
+		{
+			if (_inventory.Items[index - 1].GetType().GetInterfaces()[0] == typeof(IPurchasable))
+			{
+				_inventory.AddGold((int)(_inventory.Items[index - 1].Price * 0.85f));
+				_inventory.RemoveItem(index - 1);
 			}
 		}
 	}
