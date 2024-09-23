@@ -30,6 +30,10 @@ namespace TextRPG
 
 			Gold = 1500;
 		}
+		public string ShowGold()
+		{
+			return $"Gold : {Gold}";
+		}
 
 		public string ShowItemList()
 		{
