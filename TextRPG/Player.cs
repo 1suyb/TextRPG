@@ -13,6 +13,7 @@ namespace TextRPG
 		private Inventory _inventory;
 		private Weapon? _weapon;
 		private Armor? _armor;
+		public Playable Character { get { return _character; } }
 		public Inventory Inventory { get { return _inventory; } }
 
 		public Player()
@@ -37,10 +38,12 @@ namespace TextRPG
 		{
 			return _inventory.ShowItemList(true);
 		}
+
 		public int GetInventorySize()
 		{
 			return _inventory.Items.Count;
 		}
+
 		public void Equip(int index)
 		{
 			index = index - 1;
@@ -89,6 +92,11 @@ namespace TextRPG
 
 		public void PurchaseItem(Item item)
 		{
+			if (_inventory.HasItem(item))
+			{
+				Console.WriteLine("이미 구매한 아이템입니다.");
+				return;
+			}
 			if (_inventory.UseGold(item.Price))
 			{
 				_inventory.AddItem(item);

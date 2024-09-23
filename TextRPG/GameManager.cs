@@ -15,6 +15,7 @@ namespace TextRPG
 		Status = 1,
 		Inventory = 2,
 		Shop = 3,
+		Rest = 5,
 	}
 	internal class GameManager
 	{
@@ -50,6 +51,9 @@ namespace TextRPG
 					case GameState.Shop:
 						ShopScene();
 						break;
+					case GameState.Rest:
+						RestScene();
+						break;
 
 				}
 			}
@@ -79,6 +83,7 @@ namespace TextRPG
 			Console.WriteLine("1. 상태보기");
 			Console.WriteLine("2. 인벤토리");
 			Console.WriteLine("3. 상점");
+			Console.WriteLine("5. 휴식하기");
 			Console.WriteLine();
 			Console.WriteLine("원하시는 행동을 입력해주세요");
 			Console.Write(">>>");
@@ -96,7 +101,7 @@ namespace TextRPG
 			while (true)
 			{
 				userInput = Input();
-				if (IsVaildInput(1, 4, userInput)) { break; }
+				if (IsVaildInput(1, 6, userInput)) { break; }
 				else { Console.WriteLine("잘못된 입력입니다. 다시 입력하세요."); }
 			}
 			_state = (GameState)userInput;
@@ -186,6 +191,35 @@ namespace TextRPG
 			}
 			_state = GameState.Main;
 		}
-
+		public void RestScene()
+		{
+			Console.WriteLine("");
+			Console.WriteLine($"500G로 HP를 회복 할 수 있습니다. (보유골드 : {_player.Inventory.Gold})");
+			Console.WriteLine("1. 휴식하기");
+			Console.WriteLine("0. 나가기");
+			int input = 0;
+			while (true)
+			{
+				input = Input();
+				if (IsVaildInput(0, 2, input)) { break; }
+				else { Console.WriteLine("잘못된 입력입니다."); }
+			}
+			if (input == 1)
+			{
+				if (_player.Inventory.Gold < 500)
+				{
+					Console.WriteLine("골드가 부족합니다.");
+					return;
+				}
+                else
+                {
+					int beforeHP = _player.Character.HP;
+					_player.Character.RecoveryHP(_player.Character.MaxHp);
+					int afterHP = _player.Character.HP;
+					Console.WriteLine($"HP를 회복하였습니다. {beforeHP} -> {afterHP}");
+                }
+			}
+			_state = GameState.Main;
+		}
 	}
 }

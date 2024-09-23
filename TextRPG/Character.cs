@@ -70,6 +70,7 @@ namespace TextRPG
 		}
 		public void AddAttack(int attack) { this.Attack += attack; }
 		public void AddDefense(int defense) { this.Defense += defense; }
+		public void RecoveryHP(int hp) { HP += hp; }
 	}
 	public class Warrior : Playable
 	{
