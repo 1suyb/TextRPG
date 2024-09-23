@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -64,9 +66,12 @@ namespace TextRPG
 		}
 		private void TakeOffEquipment(Weapon weapon)
 		{
-			weapon.TakeOff();
-			this._weapon = null;
-			_character.AddAttack(-weapon.Attack);
+			if(_weapon == weapon)
+			{
+				weapon.TakeOff();
+				this._weapon = null;
+				_character.AddAttack(-weapon.Attack);
+			}
 		}
 		private void WearEuipment(Weapon weapon)
 		{
@@ -77,9 +82,12 @@ namespace TextRPG
 		}
 		private void TakeOffEquipment(Armor armor)
 		{
-			armor.TakeOff();
-			_armor = null;
-			_character.AddDefense(-armor.Defense);
+			if(_armor == armor)
+			{
+				armor.TakeOff();
+				_armor = null;
+				_character.AddDefense(-armor.Defense);
+			}
 		}
 		private void WearEuipment(Armor armor)
 		{
@@ -89,7 +97,6 @@ namespace TextRPG
 			_armor = armor;
 			_character.AddDefense(armor.Defense);
 		}
-
 		public void PurchaseItem(Item item)
 		{
 			if (_inventory.HasItem(item))
@@ -107,10 +114,20 @@ namespace TextRPG
 		}
 		public void SellItem(int index)
 		{
-			if (_inventory.Items[index - 1].GetType().GetInterfaces()[0] == typeof(IPurchasable))
+			index = index - 1;
+			Item item = _inventory.Items[index];
+			if (item.GetType().GetInterfaces()[0] == typeof(IPurchasable))
 			{
-				_inventory.AddGold((int)(_inventory.Items[index - 1].Price * 0.85f));
-				_inventory.RemoveItem(index - 1);
+				if (item.GetType() == typeof(Weapon))
+				{
+					TakeOffEquipment((Weapon)item);
+				}
+				if (item.GetType() == typeof(Armor))
+				{
+					TakeOffEquipment((Armor)item);
+				}
+				_inventory.AddGold((int)(item.Price * 0.85f));
+				_inventory.RemoveItem(index);
 			}
 		}
 	}

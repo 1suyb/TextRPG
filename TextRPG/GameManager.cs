@@ -214,7 +214,7 @@ namespace TextRPG
                 else
                 {
 					int beforeHP = _player.Character.HP;
-					_player.Character.RecoveryHP(_player.Character.MaxHp);
+					_player.Character.RecoveryHP(100);
 					int afterHP = _player.Character.HP;
 					Console.WriteLine($"HP를 회복하였습니다. {beforeHP} -> {afterHP}");
                 }
