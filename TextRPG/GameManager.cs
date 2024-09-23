@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -74,6 +75,7 @@ namespace TextRPG
 		}
 		public void MainScene()
 		{
+			Console.WriteLine();
 			Console.WriteLine("1. 상태보기");
 			Console.WriteLine("2. 인벤토리");
 			Console.WriteLine("3. 상점");
@@ -101,18 +103,46 @@ namespace TextRPG
 		}
 		public void StatusScene()
 		{
+			Console.WriteLine();
 			Console.WriteLine("Debug - Staus 진입");
 			Console.WriteLine(_player.ShowInfo());
 			_state = GameState.Main;
 		}
 		public void InventoryScene()
 		{
+			Console.WriteLine();
 			Console.WriteLine("Debug - Inventory 진입");
 			Console.WriteLine(_player.ShowInventoryInfo());
+			Console.WriteLine("1. 착용 관리");
+			Console.WriteLine("0. 나가기");
+			Console.WriteLine();
+			int input = 0;
+			while (true) 
+			{
+				input = Input();
+				if(IsVaildInput(0,2, input)) { break; }
+				else { Console.WriteLine("잘못된 입력입니다."); }
+			}
+			if(input == 1)
+			{
+				Console.WriteLine(_player.ShowItemList());
+				Console.WriteLine("0. 나가기");
+				while (true)
+				{
+					input = Input();
+					if (IsVaildInput(0, _player.GetInventorySize()-1, input)) { break; }
+					else { Console.WriteLine("잘못된 입력입니다."); }
+				}
+				if(input != 0)
+				{
+					_player.WearEquipment(input);
+				}
+			}
 			_state = GameState.Main;
 		}
 		public void ShopScene()
 		{
+			Console.WriteLine();
 			Console.WriteLine("Debug - Shop 진입");
 			Console.WriteLine(_shop.ShowShopItemList());
 			_state = GameState.Main;

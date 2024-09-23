@@ -38,11 +38,12 @@ namespace TextRPG
 		protected bool _isWorn;
 		public bool IsWorn { get { return _isWorn; } }
 
-		public virtual void Wear(ICharacter chr)
+		public virtual int Wear()
 		{
 			_isWorn = true;
+			return 0;
 		}
-		public virtual void TakeOff(ICharacter chr)
+		public virtual void TakeOff()
 		{
 			_isWorn = false;
 		}
@@ -77,6 +78,11 @@ namespace TextRPG
 			string[] details = base.Info().Split("|");
 			return $"{details[0]} | 공격력 : {Attack} | {details[1]}";
 		}
+		public override int Wear()
+		{
+			base.Wear();
+			return this.Attack;
+		}
 
 	}
 	public class Armor : Equipment 
@@ -101,6 +107,11 @@ namespace TextRPG
 		{
 			string[] details = base.Info().Split("|");
 			return $"{details[0]} | 방어력 : {Defense} | {details[1]}";
+		}
+		public override int Wear()
+		{
+			base.Wear();
+			return this.Defense;
 		}
 	}
 

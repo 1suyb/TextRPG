@@ -35,15 +35,15 @@ namespace TextRPG
 			return $"Gold : {Gold}";
 		}
 
-		public string ShowItemList()
+		public string ShowItemList(bool lineNumber = false)
 		{
 			StringBuilder sb = new StringBuilder();
-			foreach(Item item in Items)
-			{
-				sb.AppendLine(item.Info());
+			for (int i = 0; i < _items.Count; i++) {
+				if (lineNumber) { sb.AppendLine($" - {i + 1} {_items[i].Info()}"); }
+				else { sb.AppendLine($" - {_items[i].Info()}"); }
 			}
 			return sb.ToString();
-		}
+		} 
 
 		public string PurchaseItem(IPurchasable item)
 		{
