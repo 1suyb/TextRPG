@@ -54,7 +54,7 @@ namespace TextRPG
 			return detail ;
 		}
 	}
-	public class Weapon : Equipment, IPurchasable
+	public class Weapon : Equipment
 	{
 		private string _name;
 		private string _description;
@@ -79,7 +79,7 @@ namespace TextRPG
 		}
 
 	}
-	public class Armor : Equipment, IPurchasable 
+	public class Armor : Equipment 
 	{
 		private string _name;
 		private string _description;

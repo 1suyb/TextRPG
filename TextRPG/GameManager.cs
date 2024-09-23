@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,16 +18,13 @@ namespace TextRPG
 	internal class GameManager
 	{
 		private GameState _state;
-		private Warrior _warrior;
-		private Inventory _inventory;
+		private Player _player;
 		private Shop _shop;
 		public GameManager()
 		{
 			_state = GameState.Start;
-			_warrior = new Warrior();
-			_inventory = new Inventory();
+			_player = new Player();
 			_shop = new Shop();
-			_inventory.TestInit();
 			_shop.TestInit();
 		}
 
@@ -58,18 +56,20 @@ namespace TextRPG
 		public int Input()
 		{
 			string? input = "";
-			while (input == null || input == "")
+			int inputnum = 0;
+			while (true)
 			{
 				input = Console.ReadLine();
+				if(int.TryParse(input,out inputnum)) { return inputnum; }
+				else { Console.WriteLine("잘못된 입력입니다."); }
 			}
-			return int.Parse(input);
 		}
 		
 		public void StartScene()
 		{
 			Console.WriteLine("어서오세요 TextRPG입니다");
 			Console.WriteLine("이름을 설정해주세요");
-			_warrior.SetName(Console.ReadLine());
+			_player.SetName(Console.ReadLine());
 			_state = GameState.Main;
 		}
 		public void MainScene()
@@ -82,42 +82,39 @@ namespace TextRPG
 			Console.Write(">>>");
 			GetUserInputInMainScene();
 		}
+		public bool IsVaildInput(int min, int max, int input)
+		{
+			if (min <= input || input < max) { return true; }
+			else { return false; }
+		}
+
 		public void GetUserInputInMainScene()
 		{
 			int userInput = 0;
 			while (true)
 			{
 				userInput = Input();
-				Console.WriteLine(userInput);
-				Console.WriteLine((GameState)userInput);
-				if (userInput <= 0 || userInput > 3)
-				{
-					Console.WriteLine(" 잘못된 입력입니다. ");
-				}
-				else
-				{
-					break;
-				}
-				
+				if (IsVaildInput(1, 4, userInput)) { break; }
+				else { Console.WriteLine("잘못된 입력입니다. 다시 입력하세요."); }
 			}
 			_state = (GameState)userInput;
 		}
 		public void StatusScene()
 		{
 			Console.WriteLine("Debug - Staus 진입");
-			Console.WriteLine(_warrior.ShowDetailStatus());
+			Console.WriteLine(_player.ShowInfo());
 			_state = GameState.Main;
 		}
 		public void InventoryScene()
 		{
 			Console.WriteLine("Debug - Inventory 진입");
-			Console.WriteLine(_inventory.ShowItemList());
+			Console.WriteLine(_player.ShowInventoryInfo());
 			_state = GameState.Main;
 		}
 		public void ShopScene()
 		{
 			Console.WriteLine("Debug - Shop 진입");
-			Console.WriteLine(_shop.ShowShopItemList(_inventory));
+			Console.WriteLine(_shop.ShowShopItemList());
 			_state = GameState.Main;
 		}
 
