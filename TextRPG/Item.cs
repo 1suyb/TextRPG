@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace TextRPG
 {
 	public abstract class Item: IPurchasable
 	{
-		public abstract string Name { get; }
-		public abstract string Description { get; }
+		public abstract string Name { get; set; }
+		public abstract string Description { get; set; }
 
-		public abstract int Price { get; protected set; }
+		public abstract int Price { get;  set; }
 
 		public virtual string Info()
 		{
@@ -43,15 +44,70 @@ namespace TextRPG
 
 	}
 
-	public abstract class Equipment : Item
+	public enum EquipType
 	{
-		protected bool _isWorn;
-		public bool IsWorn { get { return _isWorn; } }
+		Weapon = 0,
+		Armor = 1,
+	}
+	public class Equipment : Item
+	{
+		private EquipType _equipType;
+		private string _name;
+		private string _description;
+		private float _value;
+		private bool _isWorn;
 
+		[JsonInclude]
+		public EquipType EquipmentType { get { return _equipType; } set { _equipType = value; } }
+
+		[JsonInclude]
+		public override string Name { get { return _name; } set { _name = value; } }
+
+		[JsonInclude]
+		public override string Description { get { return _description; } set { _description = value; } }
+
+		[JsonInclude]
+		public float Val { get { return _value; } set { _value = value; } }
+
+		[JsonInclude]
+		public override int Price { get; set; }
+
+		[JsonInclude]
+		public bool IsWorn { get { return _isWorn; } set { _isWorn = value; } }
+
+		[JsonConstructor]
+		public Equipment(EquipType equipmentType, string name, string description, float val, int price, bool isWorn)
+		{
+			EquipmentType = equipmentType;
+			Name = name;
+			Description = description;
+			Val = val;
+			Price = price;
+			IsWorn = isWorn;
+		}
+
+		public Equipment(EquipType type, string name, string description, int val, int price)
+		{
+			EquipmentType = type;
+			Name = name;
+			Description = description;
+			Val = val;
+			IsWorn = false;
+			Price = price;
+		}
+		public Equipment()
+		{
+			EquipmentType = EquipType.Weapon;
+			Name = "";
+			Description = "";
+			Val = 0;
+			IsWorn = false;
+			Price = 0;
+		}
 		public virtual float Wear()
 		{
 			_isWorn = true;
-			return 0;
+			return Val;
 		}
 		public virtual void TakeOff()
 		{
@@ -62,69 +118,13 @@ namespace TextRPG
 		{
 			string detail = base.Info();
 			if (IsWorn) { detail = $"[E] {detail}"; }
+			string[] details = detail.Split("|");
+			if(_equipType == EquipType.Weapon) { detail = $"{details[0]} | 공격력 : {Val} | {details[1]}"; }
+			if (_equipType == EquipType.Armor) { detail = $"{details[0]} | 방어력 : {Val} | {details[1]}"; }
 			return detail ;
 		}
 	}
-	public class Weapon : Equipment
-	{
-		private string _name;
-		private string _description;
-		private float _attack;
-		public override string Name { get { return _name; } }
-		public override string Description { get { return _description; } }
-		public float Attack { get { return _attack; } }
-		public override int Price { get; protected set; }
-
-		public Weapon(string name, string description, int attack, int price)
-		{
-			_name = name;
-			_description = description;
-			_attack = attack;
-			_isWorn = false;
-			Price = price;
-		}
-		public override string Info() 
-		{
-			string[] details = base.Info().Split("|");
-			return $"{details[0]} | 공격력 : {Attack} | {details[1]}";
-		}
-		public override float Wear()
-		{
-			base.Wear();
-			return this.Attack;
-		}
-
-	}
-	public class Armor : Equipment 
-	{
-		private string _name;
-		private string _description;
-		private float _defense;
-		public float Defense { get { return _defense; } }
-		public override string Name { get { return _name; } }
-		public override string Description { get { return _description; } }
-		public override int Price { get; protected set; }
-
-		public Armor(string name, string description, int defense, int price)
-		{
-			_name = name;
-			_description = description;
-			_defense = defense;
-			_isWorn = false;
-			Price = price;
-		}
-		public override string Info()
-		{
-			string[] details = base.Info().Split("|");
-			return $"{details[0]} | 방어력 : {Defense} | {details[1]}";
-		}
-		public override float Wear()
-		{
-			base.Wear();
-			return this.Defense;
-		}
-	}
-
+	
 	public interface IPurchasable
 	{
 		public int Price { get; }

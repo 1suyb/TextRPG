@@ -31,53 +31,13 @@ namespace TextRPG
 			string jsonString = JsonSerializer.Serialize(data, options);
 			File.WriteAllText(savePath, jsonString,Encoding.UTF8);
 		}
-		//public static Player Load(string loadPath = @"test.json")
-		//{
-		//	Player player = new Player();
-		//	string json = File.ReadAllText(loadPath);
-		//	Dictionary<string, object>? dict = JsonSerializer.Deserialize<Dictionary<string, object>>(json);
-		//	if(dict==null || !dict.ContainsKey("Character") || !dict.ContainsKey("Inventory"))
-		//	{
-		//		return player;
-		//	}
-			
-		//	var characterElement = (JsonElement)dict["Character"];
-
-		//	if(characterElement.TryGetProperty("Class", out JsonElement classElement))
-		//	{
-		//		string jobClass = classElement.ToString();
-		//	}
-		//	if (characterElement.TryGetProperty("Level", out JsonElement levelEelemnt))
-		//	{
-		//		int level = levelEelemnt.GetInt32();
-		//	}
-		//	if (characterElement.TryGetProperty("Name", out JsonElement classElement))
-		//	{
-		//		string jobClass = classElement.ToString();
-		//	}
-		//	if (characterElement.TryGetProperty("MaxHp", out JsonElement classElement))
-		//	{
-		//		string jobClass = classElement.ToString();
-		//	}
-		//	if (characterElement.TryGetProperty("HP", out JsonElement classElement))
-		//	{
-		//		string jobClass = classElement.ToString();
-		//	}
-		//	if (characterElement.TryGetProperty("DefaultAttack", out JsonElement classElement))
-		//	{
-		//		string jobClass = classElement.ToString();
-		//	}
-		//	if (characterElement.TryGetProperty("Attack", out JsonElement classElement))
-		//	{
-		//		string jobClass = classElement.ToString();
-		//	}
-		//	if (characterElement.TryGetProperty("Attack", out JsonElement classElement))
-		//	{
-		//		string jobClass = classElement.ToString();
-		//	}
-
-		//	return player;
-		//}
+		public static Player Load(string loadPath = @"test.json")
+		{
+			Player player = new Player();
+			string json = File.ReadAllText(loadPath);
+			player = JsonSerializer.Deserialize<Player>(json);
+			return player;
+		}
 
 	}
 }
