@@ -97,19 +97,22 @@ namespace TextRPG
 			_armor = armor;
 			_character.AddDefense(armor.Defense);
 		}
-		public void PurchaseItem(Item item)
+		public int PurchaseItem(Item item)
+			// 1 : 골드 부족
+			// 2 : 이미 보유한 아이템
+			// 0 : 구매 성공
 		{
 			if (_inventory.HasItem(item))
 			{
-				Console.WriteLine("이미 구매한 아이템입니다.");
-				return;
+				return 2;
 			}
 			if (_inventory.UseGold(item.Price))
 			{
 				_inventory.AddItem(item);
-				_inventory.ShowItemList();
+				return 0;
+				
 			}
-			else { Console.WriteLine("골드가 부족합니다."); }
+			else { return 1; }
 			
 		}
 		public void SellItem(int index)
