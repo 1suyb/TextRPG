@@ -14,7 +14,7 @@ namespace TextRPG
 		public static readonly string path = @"saves";
 		public static bool IsVaildInput(int min, int max, int input)
 		{
-			if (min <= input || input < max) { return true; }
+			if (min <= input && input < max) { return true; }
 			else { return false; }
 		}
 		public static void Save<T>(T data, string savePath = @"test.json")
