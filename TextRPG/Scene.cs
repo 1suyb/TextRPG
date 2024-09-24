@@ -15,7 +15,7 @@ namespace TextRPG
 		public Scene(GameManager gamemanager)
 		{
 			_gameManager = gamemanager;
-			waitTime = 2000;
+			waitTime = 1500;
 		}
 
 		public abstract void DisplayScene();
