@@ -242,7 +242,7 @@ namespace TextRPG
 						return;
 					}
 					else{
-						Item item = _shop.Items[userInput - 1];
+						Equipment item = _shop.Items[userInput - 1];
 						int beforeGold = _player.Inventory.Gold;
 						int state = _player.PurchaseItem(item);
 						int afterGold = _player.Inventory.Gold;
@@ -620,9 +620,9 @@ namespace TextRPG
 						}
 						if (userInput == 0) { _state =  StartSceneState.CreateCharacter; }
 						else {
-							//_player = Utils.Load<Player>(files[userInput - 1]);
-							//Console.WriteLine(_player.ShowInfo());
-							_gameManager.SetPlayer(new Player());
+							_player = Utils.Load(files[userInput - 1]);
+							Console.WriteLine(_player.ShowInfo());
+							_gameManager.SetPlayer(_player);
 							Thread.Sleep(waitTime);
 							_gameManager.State = GameState.Main;
 						}

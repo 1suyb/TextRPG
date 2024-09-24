@@ -35,26 +35,36 @@ namespace TextRPG
 	public class Playable : ICharacter
 	{
 		protected Class _class;
-		public string? Class { get { return Enum.GetName(typeof(Class), _class); } }
-		public int Level { get; protected set; }
-		public string Name { get; protected set; }
-		public int MaxHp { get; protected set; }
+		[JsonInclude]
+		public Class JobClass { get { return _class; } set{ _class = value; } }
+		[JsonInclude]
+		public int Level { get; set; }
+		[JsonInclude]
+		public string Name { get; set; }
+		[JsonInclude]
+		public int MaxHp { get; set; }
 		protected int _hp;
+		[JsonInclude]
 		public int HP { get { return _hp; }
-			protected set
+			 set
 			{
 				if (value > MaxHp) { _hp = MaxHp; }
 				else if (value <= 0) { _hp = 0; }
 				else { _hp = value; }
 			}
 		}
-		public float DefaultAttack { get; protected set; }
-		public float Attack { get; protected set; }
-		public float DefaultDefense { get; protected set; }
-		public float Defense { get; protected set; }
-
-		public float MaxExp { get; protected set; }
-		public float Exp { get; protected set; }
+		[JsonInclude]
+		public float DefaultAttack { get; set; }
+		[JsonInclude]
+		public float Attack { get; set; }
+		[JsonInclude]
+		public float DefaultDefense { get; set; }
+		[JsonInclude]
+		public float Defense { get;  set; }
+		[JsonInclude]
+		public float MaxExp { get;  set; }
+		[JsonInclude]
+		public float Exp { get;  set; }
 
 		public Playable() {
 			Level = 1;
@@ -68,11 +78,12 @@ namespace TextRPG
 			Exp = 0;
 			Name = name;
 		}
-		public Playable(int level, string name, int maxHp, int hp, 
+		public Playable(Class jobClass, int level, string name, int maxHp, int hp, 
 			float defaultAttack, float attack, 
 			float defaultDefense, float defense,
 			float maxExp, float exp)
 		{
+			JobClass = jobClass;
 			Level = level;
 			Name = name;
 			MaxHp = maxHp;
@@ -102,7 +113,7 @@ namespace TextRPG
 			StringBuilder sb = new StringBuilder();
 			sb.AppendLine($"Lv {Level}");
 			sb.AppendLine($"EXP : {Exp} /{MaxExp}");
-			sb.AppendLine($"Class : {Class}");
+			sb.AppendLine($"Class : {JobClass.ToString()}");
 			sb.AppendLine($"Name : {Name}");
 			sb.AppendLine($"Attack : {Attack} (+{Attack-DefaultAttack})");
 			sb.AppendLine($"Defense : {Defense} (+{Defense -DefaultDefense})");
@@ -129,13 +140,15 @@ namespace TextRPG
 	}
 	public class Warrior : Playable
 	{
-		public int MaxEnergy { get; }
+		[JsonInclude]
+		public int MaxEnergy { get; set; }
 
 		protected int _energy;
+		[JsonInclude]
 		public int Energy
 		{
 			get { return _energy; }
-			protected set
+			 set
 			{
 				if (value > MaxEnergy) { _energy = MaxEnergy; }
 				else if (value <= 0) { _energy = 0; }
@@ -178,14 +191,11 @@ namespace TextRPG
 			Energy = 30;
 			
 		}
-		public Warrior(int level, string name, int maxHp, int hp,
+		public Warrior(Class cl, int level, string name, int maxHp, int hp,
 			float defaultAttack, float attack,
 			float defaultDefense, float defense,
-			float maxExp, float exp,
-			int maxEnergy, int energy) : base(level, name, maxHp, hp, defaultAttack, attack, defaultDefense, defense, maxExp, exp)
+			float maxExp, float exp) : base(cl, level, name, maxHp, hp, defaultAttack, attack, defaultDefense, defense, maxExp, exp)
 		{
-			MaxEnergy = maxEnergy;
-			Energy = energy;
 		}
 	}
 }

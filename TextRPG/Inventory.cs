@@ -2,33 +2,35 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace TextRPG
 {
 	public class Inventory
 	{
-		private List<Item> _items;
-		public List<Item> Items {  get { return _items; } }
+		private List<Equipment> _items;
+		[JsonInclude]
+		public List<Equipment> Items { get { return _items; } set { _items = value; } }
 		private int _gold;
-		public int Gold {get { return _gold; }}
+		[JsonInclude]
+		public int Gold {get { return _gold; }set{ _gold = value; } }
 
-
-		public Inventory(List<Item> items, int gold) 
-		{ 
-			_items = items;
-			_gold = gold;
-		}
-		public Inventory() 
+		[JsonConstructor]
+		public Inventory(List<Equipment> items, int gold) 
 		{
-			_items = new List<Item>();
+			Items = items;
+			Gold = gold;
+		}
+		public Inventory()
+		{
+			_items = new List<Equipment>();
 			_gold = 1500;
 		}
 		public string ShowGold()
 		{
 			return $"Gold : {Gold}";
 		}
-
 		public string ShowItemList(bool lineNumber = false)
 		{
 			StringBuilder sb = new StringBuilder();
@@ -60,7 +62,7 @@ namespace TextRPG
 			}
 			else { return false; }
         }
-		public void AddItem(Item item)
+		public void AddItem(Equipment item)
 		{
 			_items.Add(item);
 		}

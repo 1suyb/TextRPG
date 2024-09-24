@@ -8,18 +8,18 @@ namespace TextRPG
 {
 	public class Shop
 	{
-		private List<Item> _items;
-		public List<Item> Items { get { return _items; } }
+		private List<Equipment> _items;
+		public List<Equipment> Items { get { return _items; } }
 
 		public void TestInit()
 		{
-			_items = new List<Item>();
-			_items.Add(new Weapon("나무칼", "나무로 만든 칼입니다.", 1, 100));
-			_items.Add(new Weapon("돌칼", "돌로 만든 칼입니다.", 3, 300));
-			_items.Add(new Weapon("구리칼", "구리로 만든 칼입니다.", 5, 500));
-			_items.Add(new Armor("천갑옷", "나무로 만든 갑옷입니다.", 1, 100));
-			_items.Add(new Armor("나무갑옷", "돌로 만든 갑옷입니다.", 3, 300));
-			_items.Add(new Armor("구리갑옷", "구리로 만든 갑옷입니다.", 5, 500));
+			_items = new List<Equipment>();
+			_items.Add(new Equipment(EquipType.Weapon, "나무칼", "나무로 만든 칼입니다.", 1, 100));
+			_items.Add(new Equipment(EquipType.Weapon, "돌칼", "돌로 만든 칼입니다.", 3, 300 ));
+			_items.Add(new Equipment(EquipType.Weapon, "구리칼", "구리로 만든 칼입니다.", 5, 500 ));
+			_items.Add(new Equipment(EquipType.Armor, "천갑옷", "나무로 만든 갑옷입니다.", 1, 100 ));
+			_items.Add(new Equipment(EquipType.Armor, "나무갑옷", "돌로 만든 갑옷입니다.", 3, 300 ));
+			_items.Add(new Equipment(EquipType.Armor,"구리갑옷", "구리로 만든 갑옷입니다.", 5, 500 ));
 		}
 		public int GetShopItemSize()
 		{
