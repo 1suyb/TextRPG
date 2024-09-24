@@ -53,7 +53,7 @@ namespace TextRPG
 			while (true)
 			{
 				userInput = GameManager.Input();
-				if (Utils.IsVaildInput(1, 7, userInput)) { break; }
+				if (Utils.IsVaildInput(1, 6, userInput)) { break; }
 				else { WrongInputMessage(); }
 			}
 			_gameManager.State = (GameState)userInput;
@@ -90,7 +90,7 @@ namespace TextRPG
 			while (true)
 			{
 				userInput = GameManager.Input();
-				if (Utils.IsVaildInput(1, 6, userInput)) { break; }
+				if (Utils.IsVaildInput(0, 0, userInput)) { break; }
 				else { WrongInputMessage(); }
 			}
 			_gameManager.State = (GameState)userInput;
@@ -132,7 +132,7 @@ namespace TextRPG
 					while (true)
 					{
 						userInput = GameManager.Input();
-						if (Utils.IsVaildInput(0, 2, userInput)) { break; }
+						if (Utils.IsVaildInput(0, 1, userInput)) { break; }
 						else { WrongInputMessage(); }
 					}
 					if (userInput == 0)
@@ -217,7 +217,7 @@ namespace TextRPG
 					while (true)
 					{
 						userInput = GameManager.Input();
-						if (Utils.IsVaildInput(0, 3, userInput)) { break; }
+						if (Utils.IsVaildInput(0, 2, userInput)) { break; }
 						else { WrongInputMessage(); }
 					}
 					if (userInput == 0)
@@ -359,7 +359,7 @@ namespace TextRPG
 			while (true)
 			{
 				userInput = GameManager.Input();
-				if (Utils.IsVaildInput(0, 2, userInput)) { break; }
+				if (Utils.IsVaildInput(0, 1, userInput)) { break; }
 				else { WrongInputMessage(); }
 			}
 			if (userInput == 0)
@@ -500,7 +500,7 @@ namespace TextRPG
 			while (true)
 			{
 				userInput = GameManager.Input();
-				if (Utils.IsVaildInput(0, 2, userInput)) { break; }
+				if (Utils.IsVaildInput(0, 1, userInput)) { break; }
 				else { WrongInputMessage(); }
 			}
 			if (userInput == 0)
@@ -593,7 +593,7 @@ namespace TextRPG
 					while (true)
 					{
 						userInput = GameManager.Input();
-						if (Utils.IsVaildInput(1, 3, userInput)) { break; }
+						if (Utils.IsVaildInput(1, 2, userInput)) { break; }
 						else { WrongInputMessage(); }
 					}
 					_state = (StartSceneState)userInput;
