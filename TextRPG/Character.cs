@@ -33,22 +33,38 @@ namespace TextRPG
 		public string? Class { get { return Enum.GetName(typeof(Class), _class); } }
 		public int Level { get; protected set; }
 		public string Name { get; protected set; }
-
 		public int MaxHp { get; protected set; }
-
 		protected int _hp;
-		public int HP { get { return _hp; } 
-			protected set 
+		public int HP { get { return _hp; }
+			protected set
 			{
 				if (value > MaxHp) { _hp = MaxHp; }
 				else if (value <= 0) { _hp = 0; }
 				else { _hp = value; }
-			} 
+			}
 		}
 		public float DefaultAttack { get; protected set; }
 		public float Attack { get; protected set; }
 		public float DefaultDefense { get; protected set; }
 		public float Defense { get; protected set; }
+
+		public float MaxExp { get; protected set; }
+		public float Exp { get; protected set; }
+
+		public Playable() {
+			Level = 1;
+			MaxExp = 1;
+			Exp = 0;
+		}
+
+		public virtual void AddExp(int exp)
+		{
+			Exp+=exp;
+			if(Exp == MaxExp)
+			{
+				LevelUp();
+			}
+		}
 		public virtual void TakeDamage(int Demage)
 		{
 			HP -= Demage;
@@ -57,12 +73,23 @@ namespace TextRPG
 		{
 			StringBuilder sb = new StringBuilder();
 			sb.AppendLine($"Lv {Level}");
+			sb.AppendLine($"EXP : {Exp} /{MaxExp}");
 			sb.AppendLine($"Class : {Class}");
 			sb.AppendLine($"Name : {Name}");
 			sb.AppendLine($"Attack : {Attack} (+{Attack-DefaultAttack})");
 			sb.AppendLine($"Defense : {Defense} (+{Defense -DefaultDefense})");
 			sb.AppendLine($"HP : {HP}");
 			return sb.ToString();
+		}
+		public virtual void LevelUp()
+		{
+			Level += 1;
+			DefaultAttack += 0.5f;
+			Attack += 0.5f;
+			DefaultDefense += 1f;
+			Defense += 1f;
+			MaxExp += 1;
+			Exp = 0;
 		}
 		public void SetName(string name)
 		{
@@ -93,9 +120,8 @@ namespace TextRPG
 			sb.AppendLine($"Energy : {Energy}");
 			return sb.ToString() ;
 		}
-		public Warrior() 
+		public Warrior() : base()
 		{
-			Level = 1;
 			Attack = 10f;
 			DefaultAttack = 10f;
 			Defense = 5f;

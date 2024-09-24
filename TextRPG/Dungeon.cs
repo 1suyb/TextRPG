@@ -85,9 +85,14 @@ namespace TextRPG
 			}
 			return sb.ToString();
 		}
-		public bool TryDeongeon(int index,ICharacter player, out int reward, out int spentHp)
+		public bool TryDeongeon(int index,Playable player, out int reward, out int spentHp)
 		{
-			return _dungeons[index].TryDungeon(player.Defense, player.Attack, player.HP, out reward, out spentHp);
+			if(_dungeons[index].TryDungeon(player.Defense, player.Attack, player.HP, out reward, out spentHp))
+			{
+				player.AddExp(1);
+				return true;
+			}
+			else { return false; }
 		}
 		public int GetDungeonsCount() { return _dungeons.Count; }
 	}
