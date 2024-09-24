@@ -491,6 +491,25 @@ namespace TextRPG
 			Console.WriteLine();
 			PromptMessage();
 		}
+		public void DisplaySaveName()
+		{
+			IntroMessage("저장하기");
+			Console.WriteLine($"현재 데이터를 저장합니다.");
+			Console.WriteLine();
+			Console.WriteLine($"저장 파일 이름을 설정해주세요.");
+			Console.WriteLine();
+			PromptMessage();
+		}
+		public void DisplayEndScene(string path)
+		{
+			IntroMessage("저장하기");
+			Console.WriteLine($"현재 데이터가 저장되었습니다.");
+			Console.WriteLine();
+			Console.WriteLine($"{Directory.GetCurrentDirectory() +@"\"+ path}에 데이터가 저장되었습니다.");
+			Console.WriteLine();
+			PromptMessage();
+		}
+
 
 		public override void PlayScene()
 		{
@@ -507,20 +526,14 @@ namespace TextRPG
 				return;
 			else
 			{
-				Utils.Save<Player>(_player);
+				DisplaySaveName();
+				string saveFileName = Console.ReadLine();
+				Utils.Save<Player>(_player,saveFileName);
 				DisplayEndScene(Utils.path);
 				Thread.Sleep(waitTime);
 			}
 		}
-		public void DisplayEndScene(string path)
-		{
-			IntroMessage("저장하기");
-			Console.WriteLine($"현재 데이터가 저장되었습니다.");
-			Console.WriteLine();
-			Console.WriteLine($"{Directory.GetCurrentDirectory()+path}에 데이터가 저장되었습니다.");
-			Console.WriteLine();
-			PromptMessage();
-		}
+		
 	}
 
 	public class StartScene : Scene
@@ -608,9 +621,13 @@ namespace TextRPG
 					Thread.Sleep(waitTime);
 					break;
 				case StartSceneState.LoadData:
+					string[]? files = null;
 					if (Directory.Exists(Utils.path))
 					{
-						string[] files = Directory.GetFiles(Utils.path);
+						files = Directory.GetFiles(Utils.path);
+					}
+					if (files.Length>0)
+					{
 						DisplayLoadCharacter(files);
 						while (true)
 						{

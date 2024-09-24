@@ -1,16 +1,16 @@
 ﻿{
   "Character": {
     "JobClass": 0,
-    "Level": 1,
-    "Name": "\uAE38\uB3D9\uC774",
+    "Level": 2,
+    "Name": "\uD64D\uAE38\uB3D9",
     "MaxHp": 100,
     "HP": 100,
-    "DefaultAttack": 10,
-    "Attack": 15,
-    "DefaultDefense": 5,
-    "Defense": 10,
-    "MaxExp": 1,
-    "Exp": 0
+    "DefaultAttack": 10.5,
+    "Attack": 15.5,
+    "DefaultDefense": 6,
+    "Defense": 11,
+    "MaxExp": 2,
+    "Exp": 1
   },
   "Inventory": {
     "Items": [
@@ -31,7 +31,7 @@
         "IsWorn": true
       }
     ],
-    "Gold": 500
+    "Gold": 3650
   },
   "Equips": [
     {
