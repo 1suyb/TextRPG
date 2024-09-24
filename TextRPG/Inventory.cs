@@ -13,13 +13,15 @@ namespace TextRPG
 		private int _gold;
 		public int Gold {get { return _gold; }}
 
-		public void TestInit()
+
+		public Inventory(List<Item> items, int gold) 
+		{ 
+			_items = items;
+			_gold = gold;
+		}
+		public Inventory() 
 		{
 			_items = new List<Item>();
-			_items.Add(new Weapon("나무칼", "나무로 만든 칼입니다.", 1, 100));
-
-			_items.Add(new Armor("천갑옷", "나무로 만든 갑옷입니다.", 1, 100));
-
 			_gold = 1500;
 		}
 		public string ShowGold()
@@ -36,7 +38,6 @@ namespace TextRPG
 			}
 			return sb.ToString();
 		} 
-		
 		public bool HasItem(Item item)
 		{
 			foreach(Item i in _items)
@@ -45,7 +46,6 @@ namespace TextRPG
 			}
 			return false;
 		}
-
 		public bool IsEnoughGold(int gold)
 		{
 			if (_gold - gold < 0) { return false; }

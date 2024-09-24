@@ -53,7 +53,7 @@ namespace TextRPG
 			while (true)
 			{
 				userInput = GameManager.Input();
-				if (Utils.IsVaildInput(1, 6, userInput)) { break; }
+				if (Utils.IsVaildInput(1, 7, userInput)) { break; }
 				else { WrongInputMessage(); }
 			}
 			_gameManager.State = (GameState)userInput;
@@ -69,6 +69,7 @@ namespace TextRPG
 			Console.WriteLine("3. 상점");
 			Console.WriteLine("4. 던전");
 			Console.WriteLine("5. 휴식하기");
+			Console.WriteLine("6. 저장하기");
 			Console.WriteLine();
 			PromptMessage();
 
@@ -470,6 +471,178 @@ namespace TextRPG
 			Console.WriteLine($"큰 부상!");
 			Console.WriteLine($"HP : {aftereHp + HP} -> {aftereHp}");
 			Console.WriteLine();
+		}
+	}
+	public class SaveScene : Scene
+	{
+		private Player _player;
+		public SaveScene(GameManager gamemanager, Player player) : base(gamemanager)
+		{
+			_player = player;
+		}
+
+		public override void DisplayScene()
+		{
+			IntroMessage("저장하기");
+			Console.WriteLine($"현재 데이터를 저장합니다.");
+			Console.WriteLine();
+			Console.WriteLine("1. 저장하기");
+			Console.WriteLine("0. 나가기");
+			Console.WriteLine();
+			PromptMessage();
+		}
+
+		public override void PlayScene()
+		{
+			_gameManager.State = GameState.Main;
+			int userInput = 0;
+			DisplayScene();
+			while (true)
+			{
+				userInput = GameManager.Input();
+				if (Utils.IsVaildInput(0, 2, userInput)) { break; }
+				else { WrongInputMessage(); }
+			}
+			if (userInput == 0)
+				return;
+			else
+			{
+				Utils.Save<Player>(_player);
+				DisplayEndScene(Utils.path);
+				Thread.Sleep(waitTime);
+			}
+		}
+		public void DisplayEndScene(string path)
+		{
+			IntroMessage("저장하기");
+			Console.WriteLine($"현재 데이터가 저장되었습니다.");
+			Console.WriteLine();
+			Console.WriteLine($"{Directory.GetCurrentDirectory()+path}에 데이터가 저장되었습니다.");
+			Console.WriteLine();
+			PromptMessage();
+		}
+	}
+
+	public class StartScene : Scene
+	{
+		public enum StartSceneState
+		{
+			Start,
+			CreateCharacter,
+			LoadData,
+			LoadDataFail,
+		}
+		private Player _player;
+		private StartSceneState _state;
+		public StartScene(GameManager gamemanager) : base(gamemanager)
+		{
+		}
+
+		public override void DisplayScene()
+		{
+			IntroMessage("TextRPG");
+			Console.WriteLine("어서오세요! TextRPG 입니다.");
+			Console.WriteLine();
+			Console.WriteLine("1. 새로하기") ;
+			Console.WriteLine("2. 이어하기");
+			Console.WriteLine();
+			PromptMessage();
+
+		}
+		public void DisplayCreateNewCharacter()
+		{
+			IntroMessage("TextRPG");
+			Console.WriteLine("어서오세요! TextRPG 세계에!");
+			Console.WriteLine();
+			Console.WriteLine("케릭터 이름을 입력해주세요.");
+			Console.WriteLine();
+			PromptMessage();
+		}
+		public void DisplayLoadCharacter(string[] savedatas)
+		{
+			IntroMessage("TextRPG");
+			Console.WriteLine("다시만나서 반갑습니다!");
+			Console.WriteLine();
+			Console.WriteLine("로드할 세이브 데이터를 선택해주세요!");
+			for(int i = 0; i < savedatas.Length; i++)
+			{
+				Console.WriteLine($" - {i + 1} {savedatas[i]}");
+			}
+			Console.WriteLine();
+			Console.WriteLine("0. 새로하기");
+			Console.WriteLine();
+			PromptMessage();
+		}
+		public void DisplayLoadFail()
+		{
+			IntroMessage("TextRPG");
+			Console.WriteLine("어서오세요! TextRPG 세계에!");
+			Console.WriteLine();
+			Console.WriteLine("저장된 데이터가 없는것 같아요...");
+			Console.WriteLine("1. 새로하기");
+			Console.WriteLine();
+			PromptMessage();
+		}
+		public override void PlayScene()
+		{
+			int userInput = 0;
+			switch (_state)
+			{
+				case StartSceneState.Start:
+					DisplayScene();
+					while (true)
+					{
+						userInput = GameManager.Input();
+						if (Utils.IsVaildInput(1, 3, userInput)) { break; }
+						else { WrongInputMessage(); }
+					}
+					_state = (StartSceneState)userInput;
+					break;
+				case StartSceneState.CreateCharacter:
+					DisplayCreateNewCharacter();
+					string input = Console.ReadLine();
+					_player = new Player();
+					_player.SetName(input);
+					_gameManager.SetPlayer( _player );
+					_gameManager.State = GameState.Main;
+					Thread.Sleep(waitTime);
+					break;
+				case StartSceneState.LoadData:
+					if (Directory.Exists(Utils.path))
+					{
+						string[] files = Directory.GetFiles(Utils.path);
+						DisplayLoadCharacter(files);
+						while (true)
+						{
+							userInput = GameManager.Input();
+							if (Utils.IsVaildInput(0, files.Length, userInput)) { break; }
+							else { WrongInputMessage(); }
+						}
+						if (userInput == 0) { _state =  StartSceneState.CreateCharacter; }
+						else {
+							//_player = Utils.Load<Player>(files[userInput - 1]);
+							//Console.WriteLine(_player.ShowInfo());
+							_gameManager.SetPlayer(new Player());
+							Thread.Sleep(waitTime);
+							_gameManager.State = GameState.Main;
+						}
+					}
+					else
+						_state = StartSceneState.LoadDataFail;
+					break;
+				case StartSceneState.LoadDataFail:
+					DisplayLoadFail();
+					while (true)
+					{
+						userInput = GameManager.Input();
+						if (Utils.IsVaildInput(0, 1, userInput)) { break; }
+						else { WrongInputMessage(); }
+					}
+					if (userInput == 1) { _state = StartSceneState.CreateCharacter; }
+					break;
+			}
+			
+
 		}
 	}
 }

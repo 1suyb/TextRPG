@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection.Emit;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace TextRPG
 {
@@ -29,7 +34,7 @@ namespace TextRPG
 
 	public class Playable : ICharacter
 	{
-		private Class _class;
+		protected Class _class;
 		public string? Class { get { return Enum.GetName(typeof(Class), _class); } }
 		public int Level { get; protected set; }
 		public string Name { get; protected set; }
@@ -55,6 +60,29 @@ namespace TextRPG
 			Level = 1;
 			MaxExp = 1;
 			Exp = 0;
+		}
+		public Playable(string name)
+		{
+			Level = 1;
+			MaxExp = 1;
+			Exp = 0;
+			Name = name;
+		}
+		public Playable(int level, string name, int maxHp, int hp, 
+			float defaultAttack, float attack, 
+			float defaultDefense, float defense,
+			float maxExp, float exp)
+		{
+			Level = level;
+			Name = name;
+			MaxHp = maxHp;
+			HP = hp;
+			DefaultAttack = defaultAttack;
+			Attack = attack;
+			DefaultDefense = defaultDefense;
+			Defense = defense;
+			MaxExp = maxExp;
+			Exp = exp;
 		}
 
 		public virtual void AddExp(int exp)
@@ -120,8 +148,26 @@ namespace TextRPG
 			sb.AppendLine($"Energy : {Energy}");
 			return sb.ToString() ;
 		}
+
+		public Warrior(Warrior warrior)
+		{
+			_class = warrior._class;
+			Level = warrior.Level;
+			Name = warrior.Name;
+			MaxHp = warrior.MaxHp;
+			HP = warrior.HP;
+			DefaultAttack = warrior.DefaultAttack;
+			Attack = warrior.Attack;
+			DefaultDefense = warrior.DefaultDefense;
+			Defense = warrior.Defense;
+			MaxExp = warrior.MaxExp;
+			Exp = warrior.Exp;
+			MaxEnergy = warrior.MaxEnergy;
+			Energy = warrior.Energy;
+		}
 		public Warrior() : base()
 		{
+			_class = TextRPG.Class.Warrior;
 			Attack = 10f;
 			DefaultAttack = 10f;
 			Defense = 5f;
@@ -131,6 +177,15 @@ namespace TextRPG
 			MaxEnergy = 30;
 			Energy = 30;
 			
+		}
+		public Warrior(int level, string name, int maxHp, int hp,
+			float defaultAttack, float attack,
+			float defaultDefense, float defense,
+			float maxExp, float exp,
+			int maxEnergy, int energy) : base(level, name, maxHp, hp, defaultAttack, attack, defaultDefense, defense, maxExp, exp)
+		{
+			MaxEnergy = maxEnergy;
+			Energy = energy;
 		}
 	}
 }

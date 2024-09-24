@@ -17,6 +17,7 @@ namespace TextRPG
 		Shop = 3,
 		Dungeon = 4,
 		Rest = 5,
+		Save= 6,
 	}
 	public class GameManager
 	{
@@ -24,14 +25,17 @@ namespace TextRPG
 		private Player _player;
 		private Shop _shop;
 
-
 		public GameState State { get {return _state; } set { _state = value; } }
+		private StartScene _startScene;
 		private MainScene _mainScene;
 		private StatusScene _statusScene;
 		private InventoryScene _inventoryScene;
 		private ShopScene _shopScene;
 		private DungeonScene _dungeonScene;
 		private RestScene _restScene;
+		private SaveScene _saveScene;
+		
+		public string SavePath { get; set; }
 
 		public GameManager()
 		{
@@ -40,13 +44,19 @@ namespace TextRPG
 			_shop = new Shop();
 			_shop.TestInit();
 
+			_startScene = new StartScene(this);
+
+			
+		}
+		public void SceneInit()
+		{
 			_mainScene = new MainScene(this);
 			_statusScene = new StatusScene(this, _player);
-			_inventoryScene = new InventoryScene(this,_player);
-			_shopScene = new ShopScene(this,_shop,_player);
-			_dungeonScene = new DungeonScene(this,_player);
-			_restScene = new RestScene(this,_player);
-			
+			_inventoryScene = new InventoryScene(this, _player);
+			_shopScene = new ShopScene(this, _shop, _player);
+			_dungeonScene = new DungeonScene(this, _player);
+			_restScene = new RestScene(this, _player);
+			_saveScene = new SaveScene(this, _player);
 		}
 
 		public void GameMain()
@@ -56,7 +66,7 @@ namespace TextRPG
 				switch (_state)
 				{
 					case GameState.Start:
-						StartScene();
+						_startScene.PlayScene();
 						break;
 					case GameState.Main:
 						_mainScene.PlayScene();
@@ -75,6 +85,9 @@ namespace TextRPG
 						break;
 					case GameState.Rest:
 						_restScene.PlayScene();
+						break;
+					case GameState.Save:
+						_saveScene.PlayScene();
 						break;
 
 				}
@@ -98,6 +111,10 @@ namespace TextRPG
 			Console.WriteLine("이름을 설정해주세요");
 			_player.SetName(Console.ReadLine());
 			_state = GameState.Main;
+		}
+		public void SetPlayer(Player player) { 
+			_player = player;
+			SceneInit();
 		}
 	}
 }

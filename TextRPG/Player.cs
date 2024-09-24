@@ -13,8 +13,8 @@ namespace TextRPG
 	{
 		private Playable _character;
 		private Inventory _inventory;
-		private Weapon? _weapon;
-		private Armor? _armor;
+		private Weapon _weapon;
+		private Armor _armor;
 		public Playable Character { get { return _character; } }
 		public Inventory Inventory { get { return _inventory; } }
 
@@ -22,7 +22,16 @@ namespace TextRPG
 		{
 			_character = new Warrior();
 			_inventory = new Inventory();
-			_inventory.TestInit();
+		}
+		public Player(int level, string name, int maxHp, int hp,
+			float defaultAttack, float attack,
+			float defaultDefense, float defense,
+			float maxExp, float exp,
+			int maxEnergy, int energy, 
+			List<Item> items, int gold) 
+		{
+			_character = new Warrior(level, name, maxHp, hp, defaultAttack, attack, defaultDefense, defense, maxExp, exp, maxEnergy, energy);
+			_inventory = new Inventory(items, gold);
 		}
 		public void SetName(string name)
 		{
@@ -40,12 +49,10 @@ namespace TextRPG
 		{
 			return _inventory.ShowItemList(true);
 		}
-
 		public int GetInventorySize()
 		{
 			return _inventory.Items.Count;
 		}
-
 		public void Equip(int index)
 		{
 			index = index - 1;
