@@ -1,0 +1,25 @@
+﻿{
+  "Character": {
+    "Class": "Warrior",
+    "Level": 1,
+    "Name": "길동이",
+    "MaxHp": 100,
+    "HP": 100,
+    "DefaultAttack": 10,
+    "Attack": 11,
+    "DefaultDefense": 5,
+    "Defense": 5,
+    "MaxExp": 1,
+    "Exp": 0
+  },
+  "Inventory": {
+    "Items": [
+      {
+        "Name": "나무칼",
+        "Description": "나무로 만든 칼입니다.",
+        "Price": 100
+      }
+    ],
+    "Gold": 1400
+  }
+}

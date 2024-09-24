@@ -22,11 +22,21 @@ namespace TextRPG
 
 		public static bool operator ==(Item left, Item right)
 		{
+			if (ReferenceEquals(left, null) && ReferenceEquals(right, null))
+				return true;
+			if (ReferenceEquals(left, null) || ReferenceEquals(right, null))
+				return false;
 			if (left.Name == right.Name) { return true; }
 			else { return false; }
+
 		}
 		public static bool operator !=(Item left, Item right)
 		{
+			if (ReferenceEquals(left, null) && ReferenceEquals(right, null))
+				return false;
+			if (ReferenceEquals(left, null) || ReferenceEquals(right, null))
+				return true;
+
 			if (left.Name == right.Name) { return false; }
 			else { return true; }
 		}
@@ -38,7 +48,7 @@ namespace TextRPG
 		protected bool _isWorn;
 		public bool IsWorn { get { return _isWorn; } }
 
-		public virtual int Wear()
+		public virtual float Wear()
 		{
 			_isWorn = true;
 			return 0;
@@ -59,10 +69,10 @@ namespace TextRPG
 	{
 		private string _name;
 		private string _description;
-		private int _attack;
+		private float _attack;
 		public override string Name { get { return _name; } }
 		public override string Description { get { return _description; } }
-		public int Attack { get { return _attack; } }
+		public float Attack { get { return _attack; } }
 		public override int Price { get; protected set; }
 
 		public Weapon(string name, string description, int attack, int price)
@@ -78,7 +88,7 @@ namespace TextRPG
 			string[] details = base.Info().Split("|");
 			return $"{details[0]} | 공격력 : {Attack} | {details[1]}";
 		}
-		public override int Wear()
+		public override float Wear()
 		{
 			base.Wear();
 			return this.Attack;
@@ -89,8 +99,8 @@ namespace TextRPG
 	{
 		private string _name;
 		private string _description;
-		private int _defense;
-		public int Defense { get { return _defense; } }
+		private float _defense;
+		public float Defense { get { return _defense; } }
 		public override string Name { get { return _name; } }
 		public override string Description { get { return _description; } }
 		public override int Price { get; protected set; }
@@ -108,7 +118,7 @@ namespace TextRPG
 			string[] details = base.Info().Split("|");
 			return $"{details[0]} | 방어력 : {Defense} | {details[1]}";
 		}
-		public override int Wear()
+		public override float Wear()
 		{
 			base.Wear();
 			return this.Defense;

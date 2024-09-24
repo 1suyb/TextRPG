@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TextRPG
 {
-	internal class Shop
+	public class Shop
 	{
 		private List<Item> _items;
 		public List<Item> Items { get { return _items; } }

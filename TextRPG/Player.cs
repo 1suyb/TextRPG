@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,13 +13,25 @@ namespace TextRPG
 	{
 		private Playable _character;
 		private Inventory _inventory;
+		private Weapon _weapon;
+		private Armor _armor;
+		public Playable Character { get { return _character; } }
 		public Inventory Inventory { get { return _inventory; } }
 
 		public Player()
 		{
-			_character = new Playable();
+			_character = new Warrior();
 			_inventory = new Inventory();
-			_inventory.TestInit();
+		}
+		public Player(int level, string name, int maxHp, int hp,
+			float defaultAttack, float attack,
+			float defaultDefense, float defense,
+			float maxExp, float exp,
+			int maxEnergy, int energy, 
+			List<Item> items, int gold) 
+		{
+			_character = new Warrior(level, name, maxHp, hp, defaultAttack, attack, defaultDefense, defense, maxExp, exp, maxEnergy, energy);
+			_inventory = new Inventory(items, gold);
 		}
 		public void SetName(string name)
 		{
@@ -39,37 +53,91 @@ namespace TextRPG
 		{
 			return _inventory.Items.Count;
 		}
-		public void WearEquipment(int index)
+		public void Equip(int index)
 		{
-			if (_inventory.Items[index-1].GetType() == typeof(Equipment)) 
+			index = index - 1;
+			if (_inventory.Items[index].GetType() == typeof(Weapon)) 
 			{
-				Weapon weapon = (Weapon) _inventory.Items[index-1];
-				this._character.AddAttack(weapon.Wear());
-				Console.WriteLine($"{weapon.Name} 장착 성공");
+				Console.WriteLine(_inventory.Items[index].Info());
+				Weapon weapon = (Weapon)_inventory.Items[index];
+				if (weapon.IsWorn) { this.TakeOffEquipment(weapon); }
+				else { this.WearEuipment(weapon); }
 			}
-			if (_inventory.Items[index - 1].GetType() == typeof(Armor))
+			if (_inventory.Items[index].GetType() == typeof(Armor))
 			{
-				Armor armor = (Armor)_inventory.Items[index - 1];
+				Armor armor = (Armor)_inventory.Items[index];
 				this._character.AddAttack(armor.Wear());
-				Console.WriteLine($"{armor.Name} 장착 성공");
+				if (armor.IsWorn) { this.TakeOffEquipment(armor); }
+				else { this.WearEuipment(armor); }
 			}
 		}
-		public void PurchaseItem(Item item)
+		private void TakeOffEquipment(Weapon weapon)
 		{
+			if(_weapon == weapon)
+			{
+				weapon.TakeOff();
+				this._weapon = null;
+				_character.AddAttack(-weapon.Attack);
+			}
+		}
+		private void WearEuipment(Weapon weapon)
+		{
+			weapon.Wear();
+			if(_weapon != null) { TakeOffEquipment(_weapon); }
+			this._weapon = weapon;
+			_character.AddAttack(weapon.Attack);
+		}
+		private void TakeOffEquipment(Armor armor)
+		{
+			if(_armor == armor)
+			{
+				armor.TakeOff();
+				_armor = null;
+				_character.AddDefense(-armor.Defense);
+			}
+		}
+		private void WearEuipment(Armor armor)
+		{
+			armor.Wear();
+			if(_armor != null) 
+			{ TakeOffEquipment(_armor); }
+			_armor = armor;
+			_character.AddDefense(armor.Defense);
+		}
+		public int PurchaseItem(Item item)
+			// 1 : 골드 부족
+			// 2 : 이미 보유한 아이템
+			// 0 : 구매 성공
+		{
+			if (_inventory.HasItem(item))
+			{
+				return 2;
+			}
 			if (_inventory.UseGold(item.Price))
 			{
 				_inventory.AddItem(item);
-				_inventory.ShowItemList();
+				return 0;
+				
 			}
-			else { Console.WriteLine("골드가 부족합니다."); }
+			else { return 1; }
 			
 		}
 		public void SellItem(int index)
 		{
-			if (_inventory.Items[index - 1].GetType().GetInterfaces()[0] == typeof(IPurchasable))
+			index = index - 1;
+			Item item = _inventory.Items[index];
+			if (item.GetType().GetInterfaces()[0] == typeof(IPurchasable))
 			{
-				_inventory.AddGold((int)(_inventory.Items[index - 1].Price * 0.85f));
-				_inventory.RemoveItem(index - 1);
+				if (item.GetType() == typeof(Weapon))
+				{
+					TakeOffEquipment((Weapon)item);
+				}
+				if (item.GetType() == typeof(Armor))
+				{
+					TakeOffEquipment((Armor)item);
+				}
+				_inventory.AddGold((int)(item.Price * 0.85f));
+				_inventory.RemoveItem(index);
 			}
 		}
 	}
