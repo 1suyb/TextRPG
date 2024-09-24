@@ -1,16 +1,16 @@
 ﻿{
   "Character": {
     "JobClass": 0,
-    "Level": 1,
-    "Name": "외않되",
+    "Level": 2,
+    "Name": "홍길동",
     "MaxHp": 100,
     "HP": 100,
-    "DefaultAttack": 10,
-    "Attack": 10,
-    "DefaultDefense": 5,
-    "Defense": 5,
-    "MaxExp": 1,
-    "Exp": 0
+    "DefaultAttack": 10.5,
+    "Attack": 15.5,
+    "DefaultDefense": 6,
+    "Defense": 11,
+    "MaxExp": 2,
+    "Exp": 1
   },
   "Inventory": {
     "Items": [
@@ -20,13 +20,35 @@
         "Description": "구리로 만든 칼입니다.",
         "Val": 5,
         "Price": 500,
-        "IsWorn": false
+        "IsWorn": true
+      },
+      {
+        "EquipmentType": 1,
+        "Name": "구리갑옷",
+        "Description": "구리로 만든 갑옷입니다.",
+        "Val": 5,
+        "Price": 500,
+        "IsWorn": true
       }
     ],
-    "Gold": 1000
+    "Gold": 3739
   },
   "Equips": [
-    null,
-    null
+    {
+      "EquipmentType": 0,
+      "Name": "구리칼",
+      "Description": "구리로 만든 칼입니다.",
+      "Val": 5,
+      "Price": 500,
+      "IsWorn": true
+    },
+    {
+      "EquipmentType": 1,
+      "Name": "구리갑옷",
+      "Description": "구리로 만든 갑옷입니다.",
+      "Val": 5,
+      "Price": 500,
+      "IsWorn": true
+    }
   ]
 }
