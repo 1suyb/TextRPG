@@ -18,7 +18,7 @@ namespace TextRPG
 			waitTime = 2000;
 		}
 
-		public abstract void ShowScene();
+		public abstract void DisplayScene();
 		public abstract void PlayScene();
 
 		public void PromptMessage()
@@ -48,7 +48,7 @@ namespace TextRPG
 
 		public override void PlayScene()
 		{
-			ShowScene();
+			DisplayScene();
 			int userInput = 0;
 			while (true)
 			{
@@ -59,7 +59,7 @@ namespace TextRPG
 			_gameManager.State = (GameState)userInput;
 		}
 
-		public override void ShowScene()
+		public override void DisplayScene()
 		{
 			IntroMessage("마을");
 			Console.WriteLine("어디로 이동하시겠습니까?");
@@ -67,6 +67,7 @@ namespace TextRPG
 			Console.WriteLine("1. 상태보기");
 			Console.WriteLine("2. 인벤토리");
 			Console.WriteLine("3. 상점");
+			Console.WriteLine("4. 던전");
 			Console.WriteLine("5. 휴식하기");
 			Console.WriteLine();
 			PromptMessage();
@@ -83,7 +84,7 @@ namespace TextRPG
 
 		public override void PlayScene()
 		{
-			ShowScene();
+			DisplayScene();
 			int userInput = 0;
 			while (true)
 			{
@@ -94,7 +95,7 @@ namespace TextRPG
 			_gameManager.State = (GameState)userInput;
 		}
 
-		public override void ShowScene()
+		public override void DisplayScene()
 		{
 			IntroMessage("상태보기");
 			Console.WriteLine("캐릭터의 정보가 표시됩니다.");
@@ -126,7 +127,7 @@ namespace TextRPG
 			switch (_state)
 			{
 				case InventoryState.ItemList:
-					ShowScene();
+					DisplayScene();
 					while (true)
 					{
 						userInput = GameManager.Input();
@@ -141,7 +142,7 @@ namespace TextRPG
 					else { _state = (InventoryState)userInput; }
 					break;
 				case InventoryState.ItemEuip:
-					ShowItemList();
+					DisplayItemList();
 					while (true)
 					{
 						userInput = GameManager.Input();
@@ -163,7 +164,7 @@ namespace TextRPG
 			}
 		}
 
-		public override void ShowScene()
+		public override void DisplayScene()
 		{
 			IntroMessage("인벤토리");
 			Console.WriteLine("보유중인 아이템을 관리합니다");
@@ -175,7 +176,7 @@ namespace TextRPG
 			Console.WriteLine();
 			PromptMessage();
 		}
-		public void ShowItemList()
+		public void DisplayItemList()
 		{
 			IntroMessage("인벤토리");
 			Console.WriteLine("착용할 아이템의 번호를 입력하세요.");
@@ -211,7 +212,7 @@ namespace TextRPG
 			switch (_state)
 			{
 				case ShopSceneState.ItemList:
-					ShowScene();
+					DisplayScene();
 					while (true)
 					{
 						userInput = GameManager.Input();
@@ -226,7 +227,7 @@ namespace TextRPG
 					else { _state = (ShopSceneState)userInput; }
 					break;
 				case ShopSceneState.ItemPurchase:
-					ShowPurchaseList();
+					DisplayPurchaseList();
 					while (true)
 					{
 						userInput = GameManager.Input();
@@ -244,14 +245,14 @@ namespace TextRPG
 						int beforeGold = _player.Inventory.Gold;
 						int state = _player.PurchaseItem(item);
 						int afterGold = _player.Inventory.Gold;
-						if (state == 0) { ShowSuccessPurchase(item.Name, beforeGold, afterGold); }
-						else { ShowFailPurchase(item.Name, state); }
+						if (state == 0) { DisplaySuccessPurchase(item.Name, beforeGold, afterGold); }
+						else { DisplayFailPurchase(item.Name, state); }
 						Thread.Sleep(waitTime);
 						_state = ShopSceneState.ItemList;
 					}
 					break;
 				case ShopSceneState.ItemSell:
-					ShowSellList();
+					DisplaySellList();
 					while (true)
 					{
 						userInput = GameManager.Input();
@@ -269,7 +270,7 @@ namespace TextRPG
 						int beforeGold = _player.Inventory.Gold;
 						_player.SellItem(userInput);
 						int afterGold = _player.Inventory.Gold;
-						ShowSuccessSell(item.Name,beforeGold, afterGold);
+						DisplaySuccessSell(item.Name,beforeGold, afterGold);
 						Thread.Sleep(waitTime);
 						_state = ShopSceneState.ItemList;
 					}
@@ -277,7 +278,7 @@ namespace TextRPG
 			}
 		}
 
-		public override void ShowScene()
+		public override void DisplayScene()
 		{
 			IntroMessage("상점");
 			Console.WriteLine("아이템을 구매하거나 판매할 수 있는 상점입니다.");
@@ -290,7 +291,7 @@ namespace TextRPG
 			Console.WriteLine();
 			PromptMessage();
 		}
-		public void ShowPurchaseList()
+		public void DisplayPurchaseList()
 		{
 			IntroMessage("상점");
 			Console.WriteLine("구매할 아이템을 선택하세요.");
@@ -301,7 +302,7 @@ namespace TextRPG
 			Console.WriteLine();
 			PromptMessage();
 		}
-		public void ShowSuccessPurchase(string name, int beforeGold, int afterGold)
+		public void DisplaySuccessPurchase(string name, int beforeGold, int afterGold)
 		{
 			IntroMessage("상점");
 			Console.WriteLine("구매에 성공했습니다.");
@@ -310,7 +311,7 @@ namespace TextRPG
 			Console.WriteLine($"구매후 남은 골드 : {beforeGold} -> {afterGold}.");
 			Console.WriteLine();
 		}
-		public void ShowFailPurchase(string name, int error)
+		public void DisplayFailPurchase(string name, int error)
 		{
 			IntroMessage("상점");
 			Console.WriteLine("구매에 실패했습니다.");
@@ -320,7 +321,7 @@ namespace TextRPG
 			if(error == 2) { Console.WriteLine($"이미 보유한 아이템입니다."); }
 			Console.WriteLine();
 		}
-		public void ShowSellList()
+		public void DisplaySellList()
 		{
 			IntroMessage("상점");
 			Console.WriteLine("판매할 아이템을 선택하세요.");
@@ -331,7 +332,7 @@ namespace TextRPG
 			Console.WriteLine();
 			PromptMessage();
 		}
-		public void ShowSuccessSell(string name, int beforeGold,int afterGold)
+		public void DisplaySuccessSell(string name, int beforeGold,int afterGold)
 		{
 			IntroMessage("상점");
 			Console.WriteLine("판매에 성공했습니다.");
@@ -353,7 +354,7 @@ namespace TextRPG
 		public override void PlayScene()
 		{
 			int userInput = 0;
-			ShowScene();
+			DisplayScene();
 			while (true)
 			{
 				userInput = GameManager.Input();
@@ -370,14 +371,14 @@ namespace TextRPG
 				int beforeHP = _player.Character.HP;
 				_player.Character.RecoveryHP(100);
 				int afterHP = _player.Character.HP;
-				ShowEndScene(beforeHP, afterHP);
+				DisplayEndScene(beforeHP, afterHP);
 				Thread.Sleep(waitTime);
 				_gameManager.State = GameState.Main;
 			}
 
 		}
 
-		public override void ShowScene()
+		public override void DisplayScene()
 		{
 			IntroMessage("휴식하기");
 			Console.WriteLine($"500G를 사용하여  HP를 회복합니다. (보유골드 : {_player.Inventory.Gold})");
@@ -387,13 +388,87 @@ namespace TextRPG
 			Console.WriteLine();
 			PromptMessage();
 		}
-		public void ShowEndScene(int beforeHp, int afterHP)
+		public void DisplayEndScene(int beforeHp, int afterHP)
 		{
 			IntroMessage("휴식하기");
 			Console.WriteLine($"휴식을 완료했습니다.");
 			Console.WriteLine();
 			Console.WriteLine($"HP를 회복하였습니다 {beforeHp} -> {afterHP}");
 			Console.WriteLine("1초후 메인화면으로 돌아갑니다.");
+			Console.WriteLine();
+		}
+	}
+	public class DungeonScene : Scene
+	{
+		private Player _player;
+		private DungeonManager _dungeonManager;
+		public DungeonScene(GameManager gamemanager,Player player) : base(gamemanager)
+		{
+			_player = player;
+			_dungeonManager = new DungeonManager();	
+		}
+
+		public override void PlayScene()
+		{
+			_gameManager.State = GameState.Main;
+			int userInput = 0;
+			DisplayScene();
+			while (true)
+			{
+				userInput = GameManager.Input();
+				if (Utils.IsVaildInput(0, _dungeonManager.GetDungeonsCount(), userInput)) { break; }
+				else { WrongInputMessage(); }
+			}
+			if (userInput == 0)
+				return;
+			else
+			{
+				int reward = 0,spentHP = 0;
+				int index = userInput - 1;
+				if (_dungeonManager.TryDeongeon(index, _player.Character, out reward, out spentHP))
+				{
+					_player.Inventory.AddGold(reward);
+					_player.Character.TakeDamage(spentHP);
+					DisplayClearDungeon(reward,_player.Inventory.Gold, spentHP,_player.Character.HP);
+				}
+				else
+				{
+					_player.Character.TakeDamage(spentHP);
+					DisplayFailDungeon(spentHP, _player.Character.HP);
+				}
+				Thread.Sleep(waitTime);
+			}
+		}
+
+		public override void DisplayScene()
+		{
+			IntroMessage("던전");
+			Console.WriteLine($"던전에 들어가시겠습니까?");
+			Console.WriteLine();
+			Console.WriteLine(_dungeonManager.ShowDungeons());
+			Console.WriteLine("0. 나가기");
+			Console.WriteLine();
+			PromptMessage();
+		}
+		public void DisplayClearDungeon(int reward, int afterGold, int HP, int aftereHp)
+		{
+			IntroMessage("던전");
+			Console.WriteLine($"던전 클리어!");
+			Console.WriteLine();
+			Console.WriteLine($"획득한 보상");
+			Console.WriteLine($"Gold : {reward} ({afterGold-reward} -> {afterGold})");
+			Console.WriteLine($"경미한 부상!");
+			Console.WriteLine($"HP : {aftereHp+ HP} -> {aftereHp}");
+			Console.WriteLine();
+
+		}
+		public void DisplayFailDungeon(int HP, int aftereHp)
+		{
+			IntroMessage("던전");
+			Console.WriteLine($"던전 실패!");
+			Console.WriteLine();
+			Console.WriteLine($"큰 부상!");
+			Console.WriteLine($"HP : {aftereHp + HP} -> {aftereHp}");
 			Console.WriteLine();
 		}
 	}

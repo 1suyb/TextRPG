@@ -20,7 +20,7 @@ namespace TextRPG
 
 		public Player()
 		{
-			_character = new Playable();
+			_character = new Warrior();
 			_inventory = new Inventory();
 			_inventory.TestInit();
 		}

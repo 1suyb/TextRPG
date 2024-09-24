@@ -19,12 +19,12 @@ namespace TextRPG
 		public int Level {  get; }
 		public int MaxHp {  get; }
 		public int HP { get; }
-		public int DefaultAttack { get; }
-		public int Attack { get; }
-		public int DefaultDefense {  get; }
-		public int Defense { get; }
+		public float DefaultAttack { get; }
+		public float Attack { get; }
+		public float DefaultDefense {  get; }
+		public float Defense { get; }
 
-		public void TakeDamage(ICharacter enemy);
+		public void TakeDamage(int Demage);
 	}
 
 	public class Playable : ICharacter
@@ -45,13 +45,13 @@ namespace TextRPG
 				else { _hp = value; }
 			} 
 		}
-		public int DefaultAttack { get; protected set; }
-		public int Attack { get; protected set; }
-		public int DefaultDefense { get; protected set; }
-		public int Defense { get; protected set; }
-		public virtual void TakeDamage(ICharacter enemy)
+		public float DefaultAttack { get; protected set; }
+		public float Attack { get; protected set; }
+		public float DefaultDefense { get; protected set; }
+		public float Defense { get; protected set; }
+		public virtual void TakeDamage(int Demage)
 		{
-			HP -= enemy.Attack;
+			HP -= Demage;
 		}
 		public virtual string ShowDetailStatus()
 		{
@@ -68,8 +68,8 @@ namespace TextRPG
 		{
 			Name = name; 
 		}
-		public void AddAttack(int attack) { this.Attack += attack; }
-		public void AddDefense(int defense) { this.Defense += defense; }
+		public void AddAttack(float attack) { this.Attack += attack; }
+		public void AddDefense(float defense) { this.Defense += defense; }
 		public void RecoveryHP(int hp) { HP += hp; }
 	}
 	public class Warrior : Playable
@@ -92,6 +92,19 @@ namespace TextRPG
 			StringBuilder sb = new StringBuilder(base.ShowDetailStatus());
 			sb.AppendLine($"Energy : {Energy}");
 			return sb.ToString() ;
+		}
+		public Warrior() 
+		{
+			Level = 1;
+			Attack = 10f;
+			DefaultAttack = 10f;
+			Defense = 5f;
+			DefaultDefense = 5f;
+			MaxHp = 100;
+			HP = 100;
+			MaxEnergy = 30;
+			Energy = 30;
+			
 		}
 	}
 }

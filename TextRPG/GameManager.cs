@@ -15,6 +15,7 @@ namespace TextRPG
 		Status = 1,
 		Inventory = 2,
 		Shop = 3,
+		Dungeon = 4,
 		Rest = 5,
 	}
 	public class GameManager
@@ -29,7 +30,7 @@ namespace TextRPG
 		private StatusScene _statusScene;
 		private InventoryScene _inventoryScene;
 		private ShopScene _shopScene;
-
+		private DungeonScene _dungeonScene;
 		private RestScene _restScene;
 
 		public GameManager()
@@ -43,7 +44,9 @@ namespace TextRPG
 			_statusScene = new StatusScene(this, _player);
 			_inventoryScene = new InventoryScene(this,_player);
 			_shopScene = new ShopScene(this,_shop,_player);
+			_dungeonScene = new DungeonScene(this,_player);
 			_restScene = new RestScene(this,_player);
+			
 		}
 
 		public void GameMain()
@@ -66,6 +69,9 @@ namespace TextRPG
 						break;
 					case GameState.Shop:
 						_shopScene.PlayScene();
+						break;
+					case GameState.Dungeon:
+						_dungeonScene.PlayScene();
 						break;
 					case GameState.Rest:
 						_restScene.PlayScene();
