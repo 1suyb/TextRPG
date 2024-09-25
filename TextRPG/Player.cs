@@ -17,11 +17,11 @@ namespace TextRPG
 		private Inventory _inventory;
 		private Equipment[] equips = new Equipment[2];
 		[JsonInclude]
-		public Playable Character { get { return _character; } set { _character = value; } }
+		public Playable Character { get { return _character; } private set { _character = value; } }
 		[JsonInclude]
-		public Inventory Inventory { get { return _inventory; } set { _inventory = value; } }
+		public Inventory Inventory { get { return _inventory; } private set { _inventory = value; } }
 		[JsonInclude]
-		public Equipment[] Equips { get { return equips; } set { equips = value; } }
+		public Equipment[] Equips { get { return equips; } private set { equips = value; } }
 
 		public Player()
 		{

@@ -53,7 +53,7 @@ namespace TextRPG
 			while (true)
 			{
 				userInput = GameManager.Input();
-				if (Utils.IsVaildInput(1, 7, userInput)) { break; }
+				if (Utils.IsVaildInput(1, 6, userInput)) { break; }
 				else { WrongInputMessage(); }
 			}
 			_gameManager.State = (GameState)userInput;
@@ -90,7 +90,7 @@ namespace TextRPG
 			while (true)
 			{
 				userInput = GameManager.Input();
-				if (Utils.IsVaildInput(1, 6, userInput)) { break; }
+				if (Utils.IsVaildInput(0, 0, userInput)) { break; }
 				else { WrongInputMessage(); }
 			}
 			_gameManager.State = (GameState)userInput;
@@ -132,7 +132,7 @@ namespace TextRPG
 					while (true)
 					{
 						userInput = GameManager.Input();
-						if (Utils.IsVaildInput(0, 2, userInput)) { break; }
+						if (Utils.IsVaildInput(0, 1, userInput)) { break; }
 						else { WrongInputMessage(); }
 					}
 					if (userInput == 0)
@@ -217,7 +217,7 @@ namespace TextRPG
 					while (true)
 					{
 						userInput = GameManager.Input();
-						if (Utils.IsVaildInput(0, 3, userInput)) { break; }
+						if (Utils.IsVaildInput(0, 2, userInput)) { break; }
 						else { WrongInputMessage(); }
 					}
 					if (userInput == 0)
@@ -359,7 +359,7 @@ namespace TextRPG
 			while (true)
 			{
 				userInput = GameManager.Input();
-				if (Utils.IsVaildInput(0, 2, userInput)) { break; }
+				if (Utils.IsVaildInput(0, 1, userInput)) { break; }
 				else { WrongInputMessage(); }
 			}
 			if (userInput == 0)
@@ -491,6 +491,25 @@ namespace TextRPG
 			Console.WriteLine();
 			PromptMessage();
 		}
+		public void DisplaySaveName()
+		{
+			IntroMessage("저장하기");
+			Console.WriteLine($"현재 데이터를 저장합니다.");
+			Console.WriteLine();
+			Console.WriteLine($"저장 파일 이름을 설정해주세요.");
+			Console.WriteLine();
+			PromptMessage();
+		}
+		public void DisplayEndScene(string path)
+		{
+			IntroMessage("저장하기");
+			Console.WriteLine($"현재 데이터가 저장되었습니다.");
+			Console.WriteLine();
+			Console.WriteLine($"{Directory.GetCurrentDirectory() +@"\"+ path}에 데이터가 저장되었습니다.");
+			Console.WriteLine();
+			PromptMessage();
+		}
+
 
 		public override void PlayScene()
 		{
@@ -500,27 +519,21 @@ namespace TextRPG
 			while (true)
 			{
 				userInput = GameManager.Input();
-				if (Utils.IsVaildInput(0, 2, userInput)) { break; }
+				if (Utils.IsVaildInput(0, 1, userInput)) { break; }
 				else { WrongInputMessage(); }
 			}
 			if (userInput == 0)
 				return;
 			else
 			{
-				Utils.Save<Player>(_player);
+				DisplaySaveName();
+				string saveFileName = Console.ReadLine();
+				Utils.Save<Player>(_player,saveFileName);
 				DisplayEndScene(Utils.path);
 				Thread.Sleep(waitTime);
 			}
 		}
-		public void DisplayEndScene(string path)
-		{
-			IntroMessage("저장하기");
-			Console.WriteLine($"현재 데이터가 저장되었습니다.");
-			Console.WriteLine();
-			Console.WriteLine($"{Directory.GetCurrentDirectory()+path}에 데이터가 저장되었습니다.");
-			Console.WriteLine();
-			PromptMessage();
-		}
+		
 	}
 
 	public class StartScene : Scene
@@ -593,7 +606,7 @@ namespace TextRPG
 					while (true)
 					{
 						userInput = GameManager.Input();
-						if (Utils.IsVaildInput(1, 3, userInput)) { break; }
+						if (Utils.IsVaildInput(1, 2, userInput)) { break; }
 						else { WrongInputMessage(); }
 					}
 					_state = (StartSceneState)userInput;
@@ -608,9 +621,13 @@ namespace TextRPG
 					Thread.Sleep(waitTime);
 					break;
 				case StartSceneState.LoadData:
+					string[]? files = null;
 					if (Directory.Exists(Utils.path))
 					{
-						string[] files = Directory.GetFiles(Utils.path);
+						files = Directory.GetFiles(Utils.path);
+					}
+					if (files.Length>0)
+					{
 						DisplayLoadCharacter(files);
 						while (true)
 						{

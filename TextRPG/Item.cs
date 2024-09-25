@@ -10,10 +10,10 @@ namespace TextRPG
 {
 	public abstract class Item: IPurchasable
 	{
-		public abstract string Name { get; set; }
-		public abstract string Description { get; set; }
+		public abstract string Name { get; init; }
+		public abstract string Description { get; init; }
 
-		public abstract int Price { get;  set; }
+		public abstract int Price { get; init; }
 
 		public virtual string Info()
 		{
@@ -58,22 +58,22 @@ namespace TextRPG
 		private bool _isWorn;
 
 		[JsonInclude]
-		public EquipType EquipmentType { get { return _equipType; } set { _equipType = value; } }
+		public EquipType EquipmentType { get { return _equipType; } init{ _equipType = value; } }
 
 		[JsonInclude]
-		public override string Name { get { return _name; } set { _name = value; } }
+		public override string Name { get { return _name; } init { _name = value; } }
 
 		[JsonInclude]
-		public override string Description { get { return _description; } set { _description = value; } }
+		public override string Description { get { return _description; } init { _description = value; } }
 
 		[JsonInclude]
-		public float Val { get { return _value; } set { _value = value; } }
+		public float Val { get { return _value; } init { _value = value; } }
 
 		[JsonInclude]
-		public override int Price { get; set; }
+		public override int Price { get; init; }
 
 		[JsonInclude]
-		public bool IsWorn { get { return _isWorn; } set { _isWorn = value; } }
+		public bool IsWorn { get { return _isWorn; } init { _isWorn = value; } }
 
 		[JsonConstructor]
 		public Equipment(EquipType equipmentType, string name, string description, float val, int price, bool isWorn)
