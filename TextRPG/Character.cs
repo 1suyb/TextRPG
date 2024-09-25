@@ -36,17 +36,17 @@ namespace TextRPG
 	{
 		protected Class _class;
 		[JsonInclude]
-		public Class JobClass { get { return _class; } set{ _class = value; } }
+		public Class JobClass { get { return _class; } protected set { _class = value; } }
 		[JsonInclude]
-		public int Level { get; set; }
+		public int Level { get; protected set; }
 		[JsonInclude]
-		public string Name { get; set; }
+		public string Name { get; protected set; }
 		[JsonInclude]
-		public int MaxHp { get; set; }
+		public int MaxHp { get; protected set; }
 		protected int _hp;
 		[JsonInclude]
 		public int HP { get { return _hp; }
-			 set
+			set
 			{
 				if (value > MaxHp) { _hp = MaxHp; }
 				else if (value <= 0) { _hp = 0; }
@@ -54,17 +54,17 @@ namespace TextRPG
 			}
 		}
 		[JsonInclude]
-		public float DefaultAttack { get; set; }
+		public float DefaultAttack { get; protected set; }
 		[JsonInclude]
-		public float Attack { get; set; }
+		public float Attack { get; protected set; }
 		[JsonInclude]
-		public float DefaultDefense { get; set; }
+		public float DefaultDefense { get; protected set; }
 		[JsonInclude]
-		public float Defense { get;  set; }
+		public float Defense { get; protected set; }
 		[JsonInclude]
-		public float MaxExp { get;  set; }
+		public float MaxExp { get; protected set; }
 		[JsonInclude]
-		public float Exp { get;  set; }
+		public float Exp { get;  protected set; }
 
 		public Playable() {
 			Level = 1;
@@ -141,7 +141,7 @@ namespace TextRPG
 	public class Warrior : Playable
 	{
 		[JsonInclude]
-		public int MaxEnergy { get; set; }
+		public int MaxEnergy { get; private set; }
 
 		protected int _energy;
 		[JsonInclude]

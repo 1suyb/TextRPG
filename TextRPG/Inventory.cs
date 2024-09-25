@@ -11,10 +11,10 @@ namespace TextRPG
 	{
 		private List<Equipment> _items;
 		[JsonInclude]
-		public List<Equipment> Items { get { return _items; } set { _items = value; } }
+		public List<Equipment> Items { get { return _items; } init { _items = value; } }
 		private int _gold;
 		[JsonInclude]
-		public int Gold {get { return _gold; }set{ _gold = value; } }
+		public int Gold {get { return _gold; } init { _gold = value; } }
 
 		[JsonConstructor]
 		public Inventory(List<Equipment> items, int gold) 
